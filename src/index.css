@@ -10,3 +10,8 @@
         @apply text-xl;
     }
 }
+
+.board {
+    width: 200px;
+    height: 400px;
+}
