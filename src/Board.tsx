@@ -9,17 +9,20 @@ function Board() {
     const [height, setHeight] = useState(400)
     const [blockSize, setBlockSize] = useState(width / columns)
 
-    const offset = 0.5
+    const canvasOffset = 0.5
 
     const drawLine = (ctx: CanvasRenderingContext2D, x: number, y: number) => {
-        ctx.translate(-offset, -offset)
+        ctx.translate(-canvasOffset, -canvasOffset)
         ctx.moveTo(x, 0)
-        ctx.lineTo(x, height + offset)
+        ctx.lineTo(x, height + canvasOffset)
         ctx.strokeStyle = '#ccc'
         ctx.stroke()
     }
 
     const drawGrid = (ctx: CanvasRenderingContext2D) => {
+        for(let i = 0; i <= width; i + blockSize){
+            console.log(i)
+        }
         drawLine(ctx, blockSize, 0)
     }
 
