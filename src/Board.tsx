@@ -12,18 +12,17 @@ function Board() {
     const canvasOffset = 0.5
 
     const drawLine = (ctx: CanvasRenderingContext2D, x: number, y: number) => {
-        ctx.translate(-canvasOffset, -canvasOffset)
         ctx.moveTo(x, 0)
         ctx.lineTo(x, height + canvasOffset)
-        ctx.strokeStyle = '#ccc'
+        ctx.strokeStyle = '#d1d5db'
         ctx.stroke()
     }
 
     const drawGrid = (ctx: CanvasRenderingContext2D) => {
-        for(let i = 0; i <= width; i + blockSize){
-            console.log(i)
+        for(let lineY = 0; lineY <= width; lineY += blockSize){
+            drawLine(ctx, lineY, 0)
         }
-        drawLine(ctx, blockSize, 0)
+        
     }
 
     useEffect(() => {
