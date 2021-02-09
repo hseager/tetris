@@ -44,7 +44,7 @@ function Board() {
 
     return (
         <div>
-            <canvas ref={canvasRef} width={width} height={height} className="border-solid border-8 border-gray-300 bg-white rounded-md mb-6" />
+            <canvas ref={canvasRef} width={width} height={height} className="border-solid border-8 border-gray-300 bg-white rounded-md mb-6" data-testid="canvas-element" />
             {
                 !playing && <button className="btn" onClick={play}>Play</button>
             }

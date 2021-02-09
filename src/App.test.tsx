@@ -3,6 +3,6 @@ import App from './App';
 
 test('renders title', () => {
   render(<App />);
-  const linkElement = screen.getByText(/Tetris/i);
-  expect(linkElement).toBeInTheDocument();
+  const title = screen.getByText(/Tetris/i);
+  expect(title).toBeInTheDocument();
 });
