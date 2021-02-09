@@ -1,8 +1,9 @@
-class Canvas {
+class GameManager {
     context: CanvasRenderingContext2D
     width: number
     height: number
     blockSize: number
+    lineColor = '#ddd'
     constructor(canvasContext: CanvasRenderingContext2D, width: number, height: number, blockSize: number){
         this.context = canvasContext
         this.width = width
@@ -19,7 +20,7 @@ class Canvas {
             this.context.lineTo(x, length)
         else
             this.context.lineTo(length, y)
-        this.context.strokeStyle = '#ddd'
+        this.context.strokeStyle = this.lineColor
         this.context.stroke()
     }
     drawGrid(){
@@ -32,6 +33,9 @@ class Canvas {
             this.drawGridLine(0, lineX, this.width, 'horizontal')
         }
     }
+    start(){
+        console.log(123)
+    }
 }
 
-export default Canvas
+export default GameManager

@@ -1,25 +1,27 @@
 import { useEffect, useRef, useState } from 'react';
-import Canvas from '../classes/Canvas'
+import GameManager from '../classes/GameManager'
 
 function Board() {
-    
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
     const [columns, setColumns] = useState(10)
     const [width, setWidth] = useState(200)
     const [height, setHeight] = useState(400)
     const [blockSize, setBlockSize] = useState(width / columns)
     const [playing, setPlaying] = useState(false)
+    const [game, setGame] = useState<GameManager | null>(null)
 
     const play = () => {
         setPlaying(true)
+        game?.start()
     }
 
     useEffect(() => {
         const canvasElement = canvasRef.current
-        const context = canvasElement?.getContext('2d')
-        if(canvasElement && context){
-            const canvas = new Canvas(context, width, height, blockSize)
-            canvas.init()
+        const canvasContext = canvasElement?.getContext('2d')
+        if(canvasElement && canvasContext){
+            const game = new GameManager(canvasContext, width, height, blockSize)
+            game.init()
+            setGame(game)
         }
     },[])
 
