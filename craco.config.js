@@ -6,5 +6,8 @@ module.exports = {
                 require('autoprefixer'),
             ]
         }
+    },
+    babel: {
+        presets: ['@babel/preset-react']
     }
 }
