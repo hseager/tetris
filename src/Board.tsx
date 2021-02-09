@@ -8,7 +8,9 @@ function Board() {
     const [height, setHeight] = useState(400)
     const [blockSize, setBlockSize] = useState(width / columns)
 
-    const drawLine = (ctx: CanvasRenderingContext2D, x: number, y: number, length: number , type: 'horizontal'|'vertical') => {
+    const [playing, setPlaying] = useState(false)
+
+    const drawGridLine = (ctx: CanvasRenderingContext2D, x: number, y: number, length: number , type: 'horizontal'|'vertical') => {
         ctx.beginPath()
         ctx.moveTo(x, y)
         if(type === 'vertical')
@@ -21,11 +23,15 @@ function Board() {
 
     const drawGrid = (ctx: CanvasRenderingContext2D) => {
         for(let lineY = 0; lineY <= width; lineY += blockSize){
-            drawLine(ctx, lineY, 0, height, 'vertical')
+            drawGridLine(ctx, lineY, 0, height, 'vertical')
         }
         for(let lineX = 0; lineX <= height; lineX += blockSize){
-            drawLine(ctx, 0, lineX, width, 'horizontal')
+            drawGridLine(ctx, 0, lineX, width, 'horizontal')
         }
+    }
+
+    const play = () => {
+        setPlaying(true)
     }
 
     useEffect(() => {
@@ -37,7 +43,12 @@ function Board() {
     },[])
 
     return (
-        <canvas ref={canvasRef} width={width} height={height} className="border-solid border-8 border-gray-300 bg-white rounded-md" />
+        <div>
+            <canvas ref={canvasRef} width={width} height={height} className="border-solid border-8 border-gray-300 bg-white rounded-md mb-6" />
+            {
+                !playing && <button className="btn" onClick={play}>Play</button>
+            }
+        </div>
     )
 }
 
