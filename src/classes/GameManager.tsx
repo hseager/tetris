@@ -1,11 +1,14 @@
+import Shape from './Shape'
+
 class GameManager {
-    context: CanvasRenderingContext2D
+    ctx: CanvasRenderingContext2D
     width: number
     height: number
     blockSize: number
     lineColor = '#ddd'
+
     constructor(canvasContext: CanvasRenderingContext2D, width: number, height: number, blockSize: number){
-        this.context = canvasContext
+        this.ctx = canvasContext
         this.width = width
         this.height = height
         this.blockSize = blockSize
@@ -14,14 +17,14 @@ class GameManager {
         this.drawGrid()
     }
     drawGridLine(x: number, y: number, length: number , type: 'horizontal'|'vertical'){
-        this.context.beginPath()
-        this.context.moveTo(x, y)
+        this.ctx.beginPath()
+        this.ctx.moveTo(x, y)
         if(type === 'vertical')
-            this.context.lineTo(x, length)
+            this.ctx.lineTo(x, length)
         else
-            this.context.lineTo(length, y)
-        this.context.strokeStyle = this.lineColor
-        this.context.stroke()
+            this.ctx.lineTo(length, y)
+        this.ctx.strokeStyle = this.lineColor
+        this.ctx.stroke()
     }
     drawGrid(){
         // Draw vertical lines
@@ -34,7 +37,9 @@ class GameManager {
         }
     }
     start(){
-        console.log(123)
+        const shape = new Shape()
+        this.ctx.fillStyle = shape.color
+        this.ctx.fill(shape)
     }
 }
 
