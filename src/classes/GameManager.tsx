@@ -40,6 +40,13 @@ class GameManager {
         const shape = new Shape()
         this.ctx.fillStyle = shape.color
         this.ctx.fill(shape)
+        this.ctx.save()
+
+        setInterval(() => {
+            this.ctx.clearRect(80, 0, 40, 40)
+            this.ctx.translate(0, 20)
+            this.ctx.fill(shape)
+        }, 1000)
     }
 }
 
