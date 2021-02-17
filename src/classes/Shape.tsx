@@ -13,8 +13,8 @@ class Shape extends GameObject {
         this.context.fillRect(this.x, this.y, this.width, this.height)
     }
 
-    update(){
-        this.y += 1
+    update(secondsPassed: number){
+        this.y += secondsPassed
     }
 }
 

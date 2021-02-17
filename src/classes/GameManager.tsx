@@ -6,6 +6,7 @@ class GameManager {
     height: number
     blockSize: number
     currentShape: Shape
+    private oldTimeStamp: number
     lineColor = '#ddd'
     
     constructor(canvasContext: CanvasRenderingContext2D, width: number, height: number, blockSize: number){
@@ -14,6 +15,7 @@ class GameManager {
         this.height = height
         this.blockSize = blockSize
         this.currentShape = new Shape(this.context, 80, 0)
+        this.oldTimeStamp = 0
     }
     init(){
         // this.drawGrid()
@@ -39,15 +41,21 @@ class GameManager {
         }
     }
     start(){
-        window.requestAnimationFrame(() => { this.gameLoop() })
+        window.requestAnimationFrame((timeStamp) => { 
+            this.oldTimeStamp = timeStamp
+            this.gameLoop(timeStamp)
+        })
     }
-    gameLoop(){
+    gameLoop(timeStamp: number){
+        const secondsPassed = (timeStamp - this.oldTimeStamp) / 10
+        this.oldTimeStamp = timeStamp
+
         this.clearCanvas()
 
-        this.currentShape.update()
+        this.currentShape.update(secondsPassed)
         this.currentShape.draw()
         
-        window.requestAnimationFrame(() => { this.gameLoop() })
+        window.requestAnimationFrame((timeStamp) => { this.gameLoop(timeStamp) })
     }
     clearCanvas(){
         this.context.clearRect(0, 0, this.width, this.height)
