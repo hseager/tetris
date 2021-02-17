@@ -1,30 +1,32 @@
 import Shape from './Shape'
 
 class GameManager {
-    ctx: CanvasRenderingContext2D
+    context: CanvasRenderingContext2D
     width: number
     height: number
     blockSize: number
+    currentShape: Shape
     lineColor = '#ddd'
-
+    
     constructor(canvasContext: CanvasRenderingContext2D, width: number, height: number, blockSize: number){
-        this.ctx = canvasContext
+        this.context = canvasContext
         this.width = width
         this.height = height
         this.blockSize = blockSize
+        this.currentShape = new Shape(this.context, 80, 0)
     }
     init(){
-        this.drawGrid()
+        // this.drawGrid()
     }
     drawGridLine(x: number, y: number, length: number , type: 'horizontal'|'vertical'){
-        this.ctx.beginPath()
-        this.ctx.moveTo(x, y)
+        this.context.beginPath()
+        this.context.moveTo(x, y)
         if(type === 'vertical')
-            this.ctx.lineTo(x, length)
+            this.context.lineTo(x, length)
         else
-            this.ctx.lineTo(length, y)
-        this.ctx.strokeStyle = this.lineColor
-        this.ctx.stroke()
+            this.context.lineTo(length, y)
+        this.context.strokeStyle = this.lineColor
+        this.context.stroke()
     }
     drawGrid(){
         // Draw vertical lines
@@ -37,16 +39,18 @@ class GameManager {
         }
     }
     start(){
-        const shape = new Shape()
-        this.ctx.fillStyle = shape.color
-        this.ctx.fill(shape)
-        this.ctx.save()
+        window.requestAnimationFrame(() => { this.gameLoop() })
+    }
+    gameLoop(){
+        this.clearCanvas()
 
-        setInterval(() => {
-            this.ctx.clearRect(80, 0, 40, 40)
-            this.ctx.translate(0, 20)
-            this.ctx.fill(shape)
-        }, 1000)
+        this.currentShape.update()
+        this.currentShape.draw()
+        
+        window.requestAnimationFrame(() => { this.gameLoop() })
+    }
+    clearCanvas(){
+        this.context.clearRect(0, 0, this.width, this.height)
     }
 }
 

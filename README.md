@@ -1,4 +1,4 @@
-Tetris made with Typescript & TailwindCss
+Tetris made with React, Typescript, HTMLCanvas & TailwindCss
 
 # Getting Started with Create React App
 
