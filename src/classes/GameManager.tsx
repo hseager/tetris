@@ -10,6 +10,7 @@ class GameManager {
     private timePassed: number
     gameSpeed: number
     lastTick: number
+    shapes: Array<Shape>
 
     lineColor = '#ddd'
     
@@ -21,11 +22,12 @@ class GameManager {
         this.currentShape = new Shape(this.context, 80, -60)
         this.oldTimeStamp = 0
         this.timePassed = 0
-        this.gameSpeed = 0.5
+        this.gameSpeed = 0.3
         this.lastTick = 0
+        this.shapes = [this.currentShape]
     }
     init(){
-        this.drawGrid()
+        // this.drawGrid()
     }
     drawGridLine(x: number, y: number, length: number , type: 'horizontal'|'vertical'){
         this.context.beginPath()
@@ -58,15 +60,20 @@ class GameManager {
         this.oldTimeStamp = timeStamp
         this.timePassed += secondsPassed
 
-        // Create the game tick here
         if(this.timePassed >= this.lastTick){
-            if(this.currentShape.y + this.currentShape.height >= this.height)
+            if(this.currentShape.y + this.currentShape.height >= this.height){
                 this.currentShape.isColliding = true
-
+                this.currentShape = new Shape(this.context, 80, -60)
+                this.shapes.push(this.currentShape)
+            }
+                
             if(!this.currentShape.isColliding){
                 this.clearCanvas()
                 this.currentShape.update(this.blockSize)
-                this.currentShape.draw()
+                
+                this.shapes.forEach((shape) => {
+                    shape.draw()
+                })
             }
 
             this.lastTick = this.timePassed + this.gameSpeed
