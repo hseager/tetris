@@ -7,6 +7,10 @@ class GameManager {
     blockSize: number
     currentShape: Shape
     private oldTimeStamp: number
+    private timePassed: number
+    gameSpeed: number
+    lastTick: number
+
     lineColor = '#ddd'
     
     constructor(canvasContext: CanvasRenderingContext2D, width: number, height: number, blockSize: number){
@@ -14,11 +18,14 @@ class GameManager {
         this.width = width
         this.height = height
         this.blockSize = blockSize
-        this.currentShape = new Shape(this.context, 80, 0)
+        this.currentShape = new Shape(this.context, 80, -60)
         this.oldTimeStamp = 0
+        this.timePassed = 0
+        this.gameSpeed = 0.5
+        this.lastTick = 0
     }
     init(){
-        // this.drawGrid()
+        this.drawGrid()
     }
     drawGridLine(x: number, y: number, length: number , type: 'horizontal'|'vertical'){
         this.context.beginPath()
@@ -47,13 +54,23 @@ class GameManager {
         })
     }
     gameLoop(timeStamp: number){
-        const secondsPassed = (timeStamp - this.oldTimeStamp) / 10
+        const secondsPassed = Math.round(timeStamp - this.oldTimeStamp) / 1000
         this.oldTimeStamp = timeStamp
+        this.timePassed += secondsPassed
 
-        this.clearCanvas()
+        // Create the game tick here
+        if(this.timePassed >= this.lastTick){
+            if(this.currentShape.y + this.currentShape.height >= this.height)
+                this.currentShape.isColliding = true
 
-        this.currentShape.update(secondsPassed)
-        this.currentShape.draw()
+            if(!this.currentShape.isColliding){
+                this.clearCanvas()
+                this.currentShape.update(this.blockSize)
+                this.currentShape.draw()
+            }
+
+            this.lastTick = this.timePassed + this.gameSpeed
+        }
         
         window.requestAnimationFrame((timeStamp) => { this.gameLoop(timeStamp) })
     }
