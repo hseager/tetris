@@ -61,28 +61,41 @@ class GameManager {
         this.timePassed += secondsPassed
 
         if(this.timePassed >= this.lastTick){
-            if(this.currentShape.y + this.currentShape.height >= this.height){
-                this.currentShape.isColliding = true
-                this.currentShape = new Shape(this.context, 80, -60)
-                this.shapes.push(this.currentShape)
-            }
-                
+
             if(!this.currentShape.isColliding){
                 this.clearCanvas()
                 this.currentShape.update(this.blockSize)
                 
-                this.shapes.forEach((shape) => {
+                this.detectCollision()
+
+                this.shapes.forEach(shape => {
                     shape.draw()
                 })
+            } else {
+                this.currentShape = new Shape(this.context, 80, -60)
+                this.shapes.push(this.currentShape)
             }
 
             this.lastTick = this.timePassed + this.gameSpeed
         }
-        
         window.requestAnimationFrame((timeStamp) => { this.gameLoop(timeStamp) })
     }
     clearCanvas(){
         this.context.clearRect(0, 0, this.width, this.height)
+    }
+    detectCollision(){
+
+        if(this.shapes.length > 0){
+            this.shapes.forEach(shape => {
+                if(shape.isColliding && this.currentShape.y + this.currentShape.height >= shape.y)
+                    this.currentShape.isColliding = true
+            })
+        }
+
+        // Colliding with floor
+        if(this.currentShape.y + this.currentShape.height >= this.height)
+            this.currentShape.isColliding = true
+
     }
 }
 

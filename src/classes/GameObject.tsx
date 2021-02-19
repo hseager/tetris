@@ -3,7 +3,6 @@ class GameObject {
     x: number
     y: number
     isColliding: boolean
-
     constructor(context: CanvasRenderingContext2D, x: number, y: number){
         this.context = context
         this.x = x
