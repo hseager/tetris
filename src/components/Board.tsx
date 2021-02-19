@@ -25,9 +25,20 @@ function Board() {
         }
     },[])
 
+    const onKeyPressed = (e: React.KeyboardEvent) => {
+        console.log(e.key)
+    }
+
     return (
         <div>
-            <canvas ref={canvasRef} width={width} height={height} className="border-solid border-8 border-gray-300 bg-white rounded-md mb-6" data-testid="canvas-element" />
+            <canvas 
+                ref={canvasRef} 
+                width={width} 
+                height={height} 
+                className="border-solid border-8 border-gray-300 bg-white rounded-md mb-6" 
+                data-testid="canvas-element"
+                tabIndex={0}
+                onKeyDown={onKeyPressed} />
             {
                 !playing && <button className="btn" onClick={play}>Play</button>
             }
