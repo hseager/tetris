@@ -84,7 +84,7 @@ class GameManager {
         this.context.clearRect(0, 0, this.width, this.height)
     }
     detectCollision(){
-
+        // Colliding with shapes
         if(this.shapes.length > 0){
             this.shapes.forEach(shape => {
                 if(shape.isColliding && this.currentShape.y + this.currentShape.height >= shape.y)

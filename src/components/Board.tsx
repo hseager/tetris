@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import GameManager from '../classes/GameManager'
+import Controls from '../classes/Controls'
 
 function Board() {
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
@@ -13,6 +14,7 @@ function Board() {
     const play = () => {
         setPlaying(true)
         game?.start()
+        document.addEventListener('keydown', onKeyPressed)
     }
 
     useEffect(() => {
@@ -25,8 +27,21 @@ function Board() {
         }
     },[])
 
-    const onKeyPressed = (e: React.KeyboardEvent) => {
-        console.log(e.key)
+    const onKeyPressed = (e: KeyboardEvent) => {
+        switch (e.key){
+            case Controls.leftKeys.find(k => k === e.key):
+                console.log('move left')
+                break
+            case Controls.rightKeys.find(k => k === e.key):
+                console.log('move right')
+                break
+            case Controls.downKeys.find(k => k === e.key):
+                console.log('move down')
+                break
+            case Controls.upKeys.find(k => k === e.key):
+                console.log('move up')
+                break
+        }
     }
 
     return (
@@ -36,9 +51,7 @@ function Board() {
                 width={width} 
                 height={height} 
                 className="border-solid border-8 border-gray-300 bg-white rounded-md mb-6" 
-                data-testid="canvas-element"
-                tabIndex={0}
-                onKeyDown={onKeyPressed} />
+                data-testid="canvas-element" />
             {
                 !playing && <button className="btn" onClick={play}>Play</button>
             }
