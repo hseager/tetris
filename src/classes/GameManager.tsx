@@ -88,9 +88,14 @@ class GameManager {
         // Colliding with shapes
         if(this.shapes.length > 0){
             this.shapes.forEach(shape => {
-                if(shape.isColliding && this.currentShape.y + this.currentShape.height >= shape.y){
-                    this.currentShape.isColliding = true
-                    colliding = true
+                if(shape.isColliding
+                    && this.currentShape.x + this.currentShape.width > shape.x
+                    && this.currentShape.x < shape.x + shape.width){
+
+                    if(this.currentShape.y + this.currentShape.height >= shape.y){
+                        this.currentShape.isColliding = true
+                        colliding = true
+                    }
                 }
             })
         }
