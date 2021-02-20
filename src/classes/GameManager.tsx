@@ -108,7 +108,7 @@ class GameManager {
         return colliding
     }
     moveShape(direction: number){
-        let position = {}
+        let position: any = {}
         switch (direction){
             case Controls.MoveDirection.Up:
 
@@ -123,6 +123,9 @@ class GameManager {
                 position = { x: this.currentShape.x + this.blockSize }
                 break
         }
+
+        // Check board x boundaries
+        if(position.x + this.currentShape.width > this.width || position.x < 0) return
 
         if(!this.detectCollision()){
             this.clearCanvas()
