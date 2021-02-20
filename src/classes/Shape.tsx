@@ -1,4 +1,5 @@
 import GameObject from './GameObject'
+import Position from './Position'
 
 class Shape extends GameObject {
     width = 40
@@ -10,8 +11,9 @@ class Shape extends GameObject {
         this.context.fillStyle = 'red'
         this.context.fillRect(this.x, this.y, this.width, this.height)
     }
-    update(secondsPassed: number){
-        this.y += secondsPassed
+    update({ x = this.x, y = this.y }: Position){
+        this.x = x
+        this.y = y
     }
 }
 

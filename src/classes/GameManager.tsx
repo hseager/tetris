@@ -1,4 +1,5 @@
 import Shape from './Shape'
+import Controls from './Controls'
 
 class GameManager {
     context: CanvasRenderingContext2D
@@ -61,16 +62,10 @@ class GameManager {
         this.timePassed += secondsPassed
 
         if(this.timePassed >= this.lastTick){
-
-            if(!this.currentShape.isColliding){
+            if(!this.detectCollision()){
                 this.clearCanvas()
-                this.currentShape.update(this.blockSize)
-                
-                this.detectCollision()
-
-                this.shapes.forEach(shape => {
-                    shape.draw()
-                })
+                this.currentShape.update({y: this.currentShape.y + this.blockSize})
+                this.drawShapes()
             } else {
                 this.currentShape = new Shape(this.context, 80, -60)
                 this.shapes.push(this.currentShape)
@@ -83,19 +78,52 @@ class GameManager {
     clearCanvas(){
         this.context.clearRect(0, 0, this.width, this.height)
     }
-    detectCollision(){
+    drawShapes(){
+        this.shapes.forEach(shape => {
+            shape.draw()
+        })
+    }
+    detectCollision(): boolean{
+        let colliding = false
         // Colliding with shapes
         if(this.shapes.length > 0){
             this.shapes.forEach(shape => {
-                if(shape.isColliding && this.currentShape.y + this.currentShape.height >= shape.y)
+                if(shape.isColliding && this.currentShape.y + this.currentShape.height >= shape.y){
                     this.currentShape.isColliding = true
+                    colliding = true
+                }
             })
         }
-
         // Colliding with floor
-        if(this.currentShape.y + this.currentShape.height >= this.height)
+        if(this.currentShape.y + this.currentShape.height >= this.height){
             this.currentShape.isColliding = true
+            colliding = true
+        }
 
+        return colliding
+    }
+    moveShape(direction: number){
+        let position = {}
+        switch (direction){
+            case Controls.MoveDirection.Up:
+
+                break
+            case Controls.MoveDirection.Down:
+                position = { y: this.currentShape.y + this.blockSize }
+                break
+            case Controls.MoveDirection.Left:
+                position = { x: this.currentShape.x - this.blockSize }
+                break
+            case Controls.MoveDirection.Right:
+                position = { x: this.currentShape.x + this.blockSize }
+                break
+        }
+
+        if(!this.detectCollision()){
+            this.clearCanvas()
+            this.currentShape.update(position)
+            this.drawShapes()
+        }
     }
 }
 

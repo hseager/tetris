@@ -29,17 +29,17 @@ function Board() {
 
     const onKeyPressed = (e: KeyboardEvent) => {
         switch (e.key){
-            case Controls.leftKeys.find(k => k === e.key):
-                console.log('move left')
-                break
-            case Controls.rightKeys.find(k => k === e.key):
-                console.log('move right')
+            case Controls.upKeys.find(k => k === e.key):
+                game?.moveShape(Controls.MoveDirection.Up)
                 break
             case Controls.downKeys.find(k => k === e.key):
-                console.log('move down')
+                game?.moveShape(Controls.MoveDirection.Down)
                 break
-            case Controls.upKeys.find(k => k === e.key):
-                console.log('move up')
+            case Controls.leftKeys.find(k => k === e.key):
+                game?.moveShape(Controls.MoveDirection.Left)
+                break
+            case Controls.rightKeys.find(k => k === e.key):
+                game?.moveShape(Controls.MoveDirection.Right)
                 break
         }
     }
