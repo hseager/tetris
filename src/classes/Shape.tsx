@@ -1,17 +1,47 @@
 import GameObject from './GameObject'
 import Position from './Position'
 
+const shapes = [
+    {
+        name: 'I',
+        rotations: [
+            [
+                [0,1],
+                [0,1],
+                [0,1],
+                [0,1]
+            ],
+            [
+                [0,0,0,0],
+                [0,1,1,1]
+            ],
+        ]
+    }
+]
+
 class Shape extends GameObject {
-    width = 40
-    height = 40
     color = 'red'
-    constructor(context: CanvasRenderingContext2D | null, x: number, y: number){
+    shapes = []
+    blockSize: number
+    width: number
+    height: number
+    constructor(context: CanvasRenderingContext2D | null, x: number, y: number, blockSize: number){
         super(context, x, y)
+        this.blockSize = blockSize
+        this.width = blockSize
+        this.height = blockSize * 4
     }
     draw(){
         if(!this.context) return
+        // this.context.fillRect(this.x, this.y, this.width, this.height)
+
         this.context.fillStyle = this.color
-        this.context.fillRect(this.x, this.y, this.width, this.height)
+        this.context.beginPath()
+        this.context.moveTo(this.x, this.y)
+        this.context.lineTo(this.x + this.blockSize, this.y)
+        this.context.lineTo(this.x + this.blockSize, this.y + this.blockSize * 4)
+        this.context.lineTo(this.x, this.y + this.blockSize * 4)
+        this.context.fill()
     }
     update({ x = this.x, y = this.y }: Position){
         this.x = x

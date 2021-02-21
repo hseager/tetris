@@ -19,13 +19,13 @@ class GameManager {
         this.width = width
         this.height = height
         this.blockSize = blockSize
-        this.currentShape = new Shape(this.boardContext, 80, -60)
+        this.currentShape = new Shape(this.boardContext, 80, -60, blockSize)
         this.oldTimeStamp = 0
         this.timePassed = 0
         this.gameSpeed = 0.3
         this.lastTick = 0
         this.shapes = [this.currentShape]
-        this.nextShape = new Shape(this.boardContext, 80, -60)
+        this.nextShape = new Shape(this.boardContext, 80, -60, blockSize)
     }
     start(){
         window.requestAnimationFrame((timeStamp) => { 
@@ -44,7 +44,7 @@ class GameManager {
                 this.currentShape.update({y: this.currentShape.y + this.blockSize})
                 this.drawShapes()
             } else {
-                this.currentShape = new Shape(this.boardContext, 80, -60)
+                this.currentShape = new Shape(this.boardContext, 80, -60, this.blockSize)
                 this.shapes.push(this.currentShape)
             }
 
