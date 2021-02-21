@@ -13,6 +13,7 @@ function Board({ game, setGame } : BoardProps) {
         const boardContext = boardRef.current?.getContext('2d')
         if(boardContext){
             game.boardContext = boardContext
+            game.currentShape.context = boardContext
             setGame(game)
         }
     },[])

@@ -7,26 +7,25 @@ class GameManager {
     height: number
     blockSize: number
     currentShape: Shape
+    gameSpeed: number
+    nextShape: Shape
     private oldTimeStamp: number
     private timePassed: number
-    gameSpeed: number
-    lastTick: number
-    shapes: Array<Shape>
-    nextShape: Shape
-    lineColor = '#ddd'
-    
+    private lastTick: number
+    private shapes: Array<Shape>
+
     constructor(width: number, height: number, blockSize: number){
         this.boardContext = null
         this.width = width
         this.height = height
         this.blockSize = blockSize
-        this.currentShape = new Shape(this.boardContext, 80, -40)
+        this.currentShape = new Shape(this.boardContext, 80, -60)
         this.oldTimeStamp = 0
         this.timePassed = 0
         this.gameSpeed = 0.3
         this.lastTick = 0
         this.shapes = [this.currentShape]
-        this.nextShape = new Shape(this.boardContext, 80, -40)
+        this.nextShape = new Shape(this.boardContext, 80, -60)
     }
     start(){
         window.requestAnimationFrame((timeStamp) => { 
