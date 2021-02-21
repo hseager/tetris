@@ -1,33 +1,28 @@
 import { useEffect, useRef, useState } from 'react'
 import GameManager from '../classes/GameManager'
 
-type BoardProps = {
-    setGame: React.Dispatch<React.SetStateAction<GameManager | null>>
+interface BoardProps {
+    game: GameManager
+    setGame: React.Dispatch<React.SetStateAction<GameManager>>
 }
 
-function Board({ setGame } : BoardProps) {
-    const canvasRef = useRef<HTMLCanvasElement | null>(null)
-    const [columns, setColumns] = useState(10)
-    const [width, setWidth] = useState(200)
-    const [height, setHeight] = useState(400)
-    const [blockSize, setBlockSize] = useState(width / columns)
+function Board({ game, setGame } : BoardProps) {
+    const boardRef = useRef<HTMLCanvasElement | null>(null)
 
     useEffect(() => {
-        const canvasElement = canvasRef.current
-        const canvasContext = canvasElement?.getContext('2d')
-        if(canvasElement && canvasContext){
-            const game = new GameManager(canvasContext, width, height, blockSize)
-            game.init()
+        const boardContext = boardRef.current?.getContext('2d')
+        if(boardContext){
+            game.boardContext = boardContext
             setGame(game)
         }
     },[])
 
     return (
         <canvas 
-            ref={canvasRef} 
-            width={width} 
-            height={height} 
-            className="border-solid border-8 border-gray-300 bg-white rounded-md mb-6" 
+            ref={boardRef} 
+            width={game.width} 
+            height={game.height} 
+            className="border-solid border-8 border-gray-300 bg-white rounded-md mb-6 mr-6" 
             data-testid="canvas-element" />
     )
 }

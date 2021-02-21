@@ -2,7 +2,7 @@ import Shape from './Shape'
 import Controls from './Controls'
 
 class GameManager {
-    context: CanvasRenderingContext2D
+    boardContext: CanvasRenderingContext2D | null
     width: number
     height: number
     blockSize: number
@@ -12,42 +12,21 @@ class GameManager {
     gameSpeed: number
     lastTick: number
     shapes: Array<Shape>
+    nextShape: Shape
     lineColor = '#ddd'
     
-    constructor(canvasContext: CanvasRenderingContext2D, width: number, height: number, blockSize: number){
-        this.context = canvasContext
+    constructor(width: number, height: number, blockSize: number){
+        this.boardContext = null
         this.width = width
         this.height = height
         this.blockSize = blockSize
-        this.currentShape = new Shape(this.context, 80, -60)
+        this.currentShape = new Shape(this.boardContext, 80, -40)
         this.oldTimeStamp = 0
         this.timePassed = 0
         this.gameSpeed = 0.3
         this.lastTick = 0
         this.shapes = [this.currentShape]
-    }
-    init(){
-        // this.drawGrid()
-    }
-    drawGridLine(x: number, y: number, length: number , type: 'horizontal'|'vertical'){
-        this.context.beginPath()
-        this.context.moveTo(x, y)
-        if(type === 'vertical')
-            this.context.lineTo(x, length)
-        else
-            this.context.lineTo(length, y)
-        this.context.strokeStyle = this.lineColor
-        this.context.stroke()
-    }
-    drawGrid(){
-        // Draw vertical lines
-        for(let lineY = 0; lineY <= this.width; lineY += this.blockSize){
-            this.drawGridLine(lineY, 0, this.height, 'vertical')
-        }
-        // Draw horizontal lines
-        for(let lineX = 0; lineX <= this.height; lineX += this.blockSize){
-            this.drawGridLine(0, lineX, this.width, 'horizontal')
-        }
+        this.nextShape = new Shape(this.boardContext, 80, -40)
     }
     start(){
         window.requestAnimationFrame((timeStamp) => { 
@@ -66,7 +45,7 @@ class GameManager {
                 this.currentShape.update({y: this.currentShape.y + this.blockSize})
                 this.drawShapes()
             } else {
-                this.currentShape = new Shape(this.context, 80, -60)
+                this.currentShape = new Shape(this.boardContext, 80, -60)
                 this.shapes.push(this.currentShape)
             }
 
@@ -75,7 +54,7 @@ class GameManager {
         window.requestAnimationFrame((timeStamp) => { this.gameLoop(timeStamp) })
     }
     clearCanvas(){
-        this.context.clearRect(0, 0, this.width, this.height)
+        this.boardContext?.clearRect(0, 0, this.width, this.height)
     }
     drawShapes(){
         this.shapes.forEach(shape => {
