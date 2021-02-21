@@ -12,7 +12,6 @@ class GameManager {
     gameSpeed: number
     lastTick: number
     shapes: Array<Shape>
-
     lineColor = '#ddd'
     
     constructor(canvasContext: CanvasRenderingContext2D, width: number, height: number, blockSize: number){
