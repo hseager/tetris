@@ -6,14 +6,45 @@ const shapes = [
         name: 'I',
         rotations: [
             [
-                [0,1],
-                [0,1],
-                [0,1],
-                [0,1]
+                [1],
+                [1],
+                [1],
+                [1]
             ],
             [
-                [0,0,0,0],
-                [0,1,1,1]
+                [1,1,1,1]
+            ],
+        ]
+    },
+    {
+        name: 'O',
+        rotations: [
+            [
+                [1,1],
+                [1,1]
+            ]
+        ]
+    },
+    {
+        name: 'J',
+        rotations: [
+            [
+                [0,1],
+                [0,1],
+                [1,1],
+            ],
+            [
+                [1,0,0],
+                [1,1,1],
+            ],
+            [
+                [1,1],
+                [1,0],
+                [1,0],
+            ],
+            [
+                [1,1,1],
+                [0,0,1],
             ],
         ]
     }
@@ -25,11 +56,13 @@ class Shape extends GameObject {
     blockSize: number
     width: number
     height: number
+    layout: Array<Array<Array<number>>>
     constructor(context: CanvasRenderingContext2D | null, x: number, y: number, blockSize: number){
         super(context, x, y)
         this.blockSize = blockSize
         this.width = blockSize
         this.height = blockSize * 4
+        this.layout = shapes[2].rotations
     }
     draw(){
         if(!this.context) return

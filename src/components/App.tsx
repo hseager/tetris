@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState } from 'react'
 import Board from './Board'
 import NextShape from './NextShape'
 import Controls from '../classes/Controls'
