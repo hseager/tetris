@@ -4,7 +4,7 @@ import ShapeManager from './ShapeManager'
 import Block from './Block'
 
 class Shape extends GameObject {
-    color = 'red'
+    color: string
     blockSize: number
     type: number
     rotation: number
@@ -15,6 +15,7 @@ class Shape extends GameObject {
         this.type = ShapeManager.getRandomShapeType()
         this.rotation = 0
         this.blocks = ShapeManager.buildShape(this.type, this.rotation)
+        this.color = ShapeManager.getShapeColor(this.type)
     }
     get width(){
         let width = 0
