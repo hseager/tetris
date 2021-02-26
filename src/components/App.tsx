@@ -43,7 +43,7 @@ function App() {
             <p className="py-2">Score: {score}</p>
             <div className="flex items-start">
                 <Board game={game} setGame={setGame} />
-                <NextShape shape={game.nextShape}/>
+                <NextShape shape={game.nextShape} playing={playing}/>
             </div>
             {
                 !playing && <button className="btn" onClick={play}>Play</button>

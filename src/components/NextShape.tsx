@@ -2,12 +2,16 @@ import Shape from '../classes/Shape'
 
 interface NextShapeProps {
     shape: Shape | undefined
+    playing: boolean
 }
 
-function NextShape({shape} : NextShapeProps){
+function NextShape({shape, playing} : NextShapeProps){
     return (
         <div className="border-solid border-8 border-gray-300 bg-white rounded-md p-4 w-20 h-20">
-            { shape?.color }
+            { 
+                playing &&
+                shape?.color
+            }
         </div>
     )
 }
