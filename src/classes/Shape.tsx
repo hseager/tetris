@@ -7,8 +7,6 @@ class Shape extends GameObject {
     color = 'red'
     shapes = []
     blockSize: number
-    width: number
-    height: number
     name: string
     rotation: number
     blocks: Array<Block>
@@ -18,11 +16,27 @@ class Shape extends GameObject {
         this.name = 'J'
         this.rotation = 0
         this.blocks = ShapeBuilder.buildShape(this.name, this.rotation)
-        this.width = blockSize * 3
-        this.height = blockSize * 2
+    }
+    get width(){
+        let width = 0
+        this.blocks.map(block => {
+            width = block.x >= width ? block.x : width
+        })
+        return (width + 1) * this.blockSize
+    }
+    get height(){
+        let height = 0
+        this.blocks.map(block => {
+            height = block.y >= height ? block.y : height
+        })
+        return (height + 1) * this.blockSize
     }
     draw(){
         if(!this.context) return
+        
+        this.context.fillStyle = 'blue'
+        this.context.fillRect(this.x, this.y, 5, 5)
+
         this.context.fillStyle = this.color
         this.blocks.map(block => {
             this.context?.fillRect(this.x + this.blockSize * block.x, this.y + this.blockSize * block.y, this.blockSize, this.blockSize)
