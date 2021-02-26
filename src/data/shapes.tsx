@@ -1,5 +1,6 @@
 const shapes = [
     {
+        id: 0,
         name: 'I',
         rotations: [
             [
@@ -14,6 +15,7 @@ const shapes = [
         ]
     },
     {
+        id: 1,
         name: 'O',
         rotations: [
             [
@@ -23,6 +25,7 @@ const shapes = [
         ]
     },
     {
+        id: 2,
         name: 'J',
         rotations: [
             [

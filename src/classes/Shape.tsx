@@ -1,21 +1,20 @@
 import GameObject from './GameObject'
 import Position from './Position'
-import ShapeBuilder from './ShapeBuilder'
+import ShapeManager from './ShapeManager'
 import Block from './Block'
 
 class Shape extends GameObject {
     color = 'red'
-    shapes = []
     blockSize: number
-    name: string
+    type: number
     rotation: number
     blocks: Array<Block>
     constructor(context: CanvasRenderingContext2D | null, x: number, y: number, blockSize: number){
         super(context, x, y)
         this.blockSize = blockSize
-        this.name = 'J'
+        this.type = ShapeManager.getRandomShapeType()
         this.rotation = 0
-        this.blocks = ShapeBuilder.buildShape(this.name, this.rotation)
+        this.blocks = ShapeManager.buildShape(this.type, this.rotation)
     }
     get width(){
         let width = 0
@@ -33,9 +32,6 @@ class Shape extends GameObject {
     }
     draw(){
         if(!this.context) return
-        
-        this.context.fillStyle = 'blue'
-        this.context.fillRect(this.x, this.y, 5, 5)
 
         this.context.fillStyle = this.color
         this.blocks.map(block => {
