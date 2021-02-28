@@ -20,7 +20,7 @@ class GameManager {
         this.width = width
         this.height = height
         this.blockSize = blockSize
-        this.currentShape = new Shape(this.boardContext, 80, 20, blockSize)
+        this.currentShape = new Shape(this.boardContext, 80, -60, blockSize)
         this.nextShape = new Shape(this.boardContext, 80, -60, blockSize)
         this.oldTimeStamp = 0
         this.timePassed = 0
@@ -92,7 +92,12 @@ class GameManager {
         return colliding
     }
     collidingWithFloor(nextMove: Position): boolean{
-        return this.currentShape.blocks.some(block => block.y >= this.height)
+        let colliding = false
+        this.currentShape.blocks.forEach(block => {
+            if(nextMove.y && block.y + (nextMove.y - this.currentShape.y) >= this.height)
+                colliding = true
+        })
+        return colliding
     }
     moveShape(direction: number){
         let nextMove: Position = {}
