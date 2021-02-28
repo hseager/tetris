@@ -40,6 +40,10 @@ class Shape extends GameObject {
         })
     }
     update({ x = this.x, y = this.y }: Position){
+        this.blocks.forEach(block => {
+            block.x += (x - this.x)
+            block.y += (y - this.y)
+        })
         this.x = x
         this.y = y
     }
@@ -53,8 +57,6 @@ class Shape extends GameObject {
                     blocks.push(new Block(this.context, this.x + this.blockSize * x, this.y + this.blockSize * y))
             })
         })
-
-        console.log(blocks)
         return blocks
     }
 }
