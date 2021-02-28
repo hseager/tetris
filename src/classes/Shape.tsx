@@ -43,6 +43,9 @@ class Shape extends GameObject {
         this.x = x
         this.y = y
     }
+    fall(){
+        this.update({y: this.y + this.blockSize})
+    }
 }
 
 export default Shape

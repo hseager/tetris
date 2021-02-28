@@ -12,7 +12,7 @@ class GameManager {
     private oldTimeStamp: number
     private timePassed: number
     private lastTick: number
-    private shapes: Array<Shape>
+    private pile: Array<Shape>
 
     constructor(width: number, height: number, blockSize: number){
         this.boardContext = null
@@ -20,12 +20,12 @@ class GameManager {
         this.height = height
         this.blockSize = blockSize
         this.currentShape = new Shape(this.boardContext, 80, -60, blockSize)
+        this.nextShape = new Shape(this.boardContext, 80, -60, blockSize)
         this.oldTimeStamp = 0
         this.timePassed = 0
         this.gameSpeed = 0.3
         this.lastTick = 0
-        this.shapes = [this.currentShape]
-        this.nextShape = new Shape(this.boardContext, 80, -60, blockSize)
+        this.pile = []
     }
     start(){
         window.requestAnimationFrame((timeStamp) => { 
@@ -39,13 +39,13 @@ class GameManager {
         this.timePassed += secondsPassed
 
         if(this.timePassed >= this.lastTick){
-            if(!this.detectCollision()){
+            if(!this.isColliding()){
                 this.clearCanvas()
-                this.currentShape.update({y: this.currentShape.y + this.blockSize})
+                this.currentShape.fall()
                 this.drawShapes()
             } else {
+                this.pile.push(this.currentShape)
                 this.currentShape = new Shape(this.boardContext, 80, -60, this.blockSize)
-                this.shapes.push(this.currentShape)
             }
 
             this.lastTick = this.timePassed + this.gameSpeed
@@ -56,33 +56,37 @@ class GameManager {
         this.boardContext?.clearRect(0, 0, this.width, this.height)
     }
     drawShapes(){
-        this.shapes.forEach(shape => {
+        this.currentShape.draw()
+        this.pile.forEach(shape => {
             shape.draw()
         })
     }
-    detectCollision(): boolean{
+    isColliding(): boolean{
+        if(this.collidingWithPile() || this.collidingWithFloor()){
+            this.currentShape.isColliding = true
+            return true
+        } else {
+            return false
+        }
+    }
+    collidingWithPile(): boolean{
         let colliding = false
-        // Colliding with shapes
-        if(this.shapes.length > 0){
-            this.shapes.forEach(shape => {
+        if(this.pile.length > 0){
+            this.pile.forEach(shape => {
                 if(shape.isColliding
                     && this.currentShape.x + this.currentShape.width > shape.x
                     && this.currentShape.x < shape.x + shape.width){
 
                     if(this.currentShape.y + this.currentShape.height >= shape.y){
-                        this.currentShape.isColliding = true
                         colliding = true
                     }
                 }
             })
         }
-        // Colliding with floor
-        if(this.currentShape.y + this.currentShape.height >= this.height){
-            this.currentShape.isColliding = true
-            colliding = true
-        }
-
         return colliding
+    }
+    collidingWithFloor(): boolean{
+        return this.currentShape.y + this.currentShape.height >= this.height
     }
     moveShape(direction: number){
         let position: any = {}
@@ -104,7 +108,7 @@ class GameManager {
         // Check board x boundaries
         if(position.x + this.currentShape.width > this.width || position.x < 0) return
 
-        if(!this.detectCollision()){
+        if(!this.isColliding()){
             this.clearCanvas()
             this.currentShape.update(position)
             this.drawShapes()
