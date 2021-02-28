@@ -41,7 +41,9 @@ class GameManager {
 
         if(this.timePassed >= this.lastTick){
             let nextMove: Position = { y: this.currentShape.y + this.blockSize }
-            if(!this.detectCollision(nextMove)){
+            this.detectCollision(nextMove)
+
+            if(!this.currentShape.isColliding){
                 this.clearCanvas()
                 this.currentShape.update(nextMove)
                 this.drawShapes()
@@ -63,13 +65,9 @@ class GameManager {
             shape.draw()
         })
     }
-    detectCollision(nextMove: Position): boolean{
-        if(this.collidingWithPile(nextMove) || this.collidingWithFloor()){
+    detectCollision(nextMove: Position){
+        if(this.collidingWithPile(nextMove) || this.collidingWithFloor())
             this.currentShape.isColliding = true
-            return true
-        } else {
-            return false
-        }
     }
     collidingWithPile(nextMove: Position): boolean{
         if(this.pile.length === 0) return false
@@ -81,9 +79,15 @@ class GameManager {
                     // Has to be a better way to calculate the block position relative to the shape x,y
                     if(nextMove.y){
                         if((this.currentShape.x + this.blockSize * block.x) === (pileShape.x + this.blockSize * pileBlock.x) 
-                        && (nextMove.y + this.blockSize * block.y) >= (pileShape.y + this.blockSize * pileBlock.y)){
+                            && (nextMove.y + this.blockSize * block.y) >= (pileShape.y + this.blockSize * pileBlock.y)){
                             colliding = true
                         }
+                    }
+
+                    if(nextMove.x){
+                        if((this.currentShape.y + this.blockSize * block.y) === (pileShape.y + this.blockSize * pileBlock.y)
+                            && (nextMove.x + this.blockSize * block.x) === (pileShape.x + this.blockSize * pileBlock.x))
+                            colliding = true
                     }
                 })
             })
@@ -114,11 +118,12 @@ class GameManager {
         // Check board x boundaries
         if(nextMove.x && nextMove.x + this.currentShape.width > this.width || nextMove.x && nextMove.x < 0) return
 
-        if(!this.detectCollision(nextMove)){
-            this.clearCanvas()
-            this.currentShape.update(nextMove)
-            this.drawShapes()
-        }
+        this.detectCollision(nextMove)
+        if(this.currentShape.isColliding) return
+        
+        this.clearCanvas()
+        this.currentShape.update(nextMove)
+        this.drawShapes()
     }
 }
 
