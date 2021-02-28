@@ -1,5 +1,6 @@
 import Shape from './Shape'
 import Controls from './Controls'
+import Position from './Position'
 
 class GameManager {
     boardContext: CanvasRenderingContext2D | null
@@ -39,9 +40,10 @@ class GameManager {
         this.timePassed += secondsPassed
 
         if(this.timePassed >= this.lastTick){
-            if(!this.isColliding()){
+            let nextMove: Position = { y: this.currentShape.y + this.blockSize }
+            if(!this.detectCollision(nextMove)){
                 this.clearCanvas()
-                this.currentShape.fall()
+                this.currentShape.update(nextMove)
                 this.drawShapes()
             } else {
                 this.pile.push(this.currentShape)
@@ -61,55 +63,60 @@ class GameManager {
             shape.draw()
         })
     }
-    isColliding(): boolean{
-        if(this.collidingWithPile() || this.collidingWithFloor()){
+    detectCollision(nextMove: Position): boolean{
+        if(this.collidingWithPile(nextMove) || this.collidingWithFloor()){
             this.currentShape.isColliding = true
             return true
         } else {
             return false
         }
     }
-    collidingWithPile(): boolean{
-        let colliding = false
-        if(this.pile.length > 0){
-            this.pile.forEach(shape => {
-                if(this.currentShape.x + this.currentShape.width > shape.x
-                    && this.currentShape.x < shape.x + shape.width){
+    collidingWithPile(nextMove: Position): boolean{
+        if(this.pile.length === 0) return false
 
-                    if(this.currentShape.y + this.currentShape.height >= shape.y){
-                        colliding = true
+        let colliding = false
+        this.pile.forEach(pileShape => {
+            pileShape.blocks.forEach(pileBlock => {
+                this.currentShape.blocks.forEach(block => {
+                    // Has to be a better way to calculate the block position relative to the shape x,y
+                    if(nextMove.y){
+                        if((this.currentShape.x + this.blockSize * block.x) === (pileShape.x + this.blockSize * pileBlock.x) 
+                        && (nextMove.y + this.blockSize * block.y) >= (pileShape.y + this.blockSize * pileBlock.y)){
+                            colliding = true
+                        }
                     }
-                }
+                })
             })
-        }
+        })
+
         return colliding
     }
     collidingWithFloor(): boolean{
         return this.currentShape.y + this.currentShape.height >= this.height
     }
     moveShape(direction: number){
-        let position: any = {}
+        let nextMove: Position = {}
         switch (direction){
             case Controls.MoveDirection.Up:
                 // Rotate
                 break
             case Controls.MoveDirection.Down:
-                position = { y: this.currentShape.y + this.blockSize }
+                nextMove = { y: this.currentShape.y + this.blockSize }
                 break
             case Controls.MoveDirection.Left:
-                position = { x: this.currentShape.x - this.blockSize }
+                nextMove = { x: this.currentShape.x - this.blockSize }
                 break
             case Controls.MoveDirection.Right:
-                position = { x: this.currentShape.x + this.blockSize }
+                nextMove = { x: this.currentShape.x + this.blockSize }
                 break
         }
 
         // Check board x boundaries
-        if(position.x + this.currentShape.width > this.width || position.x < 0) return
+        if(nextMove.x && nextMove.x + this.currentShape.width > this.width || nextMove.x && nextMove.x < 0) return
 
-        if(!this.isColliding()){
+        if(!this.detectCollision(nextMove)){
             this.clearCanvas()
-            this.currentShape.update(position)
+            this.currentShape.update(nextMove)
             this.drawShapes()
         }
     }
