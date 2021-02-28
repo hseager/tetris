@@ -20,7 +20,7 @@ class GameManager {
         this.width = width
         this.height = height
         this.blockSize = blockSize
-        this.currentShape = new Shape(this.boardContext, 80, -60, blockSize)
+        this.currentShape = new Shape(this.boardContext, 80, 20, blockSize)
         this.nextShape = new Shape(this.boardContext, 80, -60, blockSize)
         this.oldTimeStamp = 0
         this.timePassed = 0
@@ -41,7 +41,11 @@ class GameManager {
 
         if(this.timePassed >= this.lastTick){
             let nextMove: Position = { y: this.currentShape.y + this.blockSize }
-            this.detectCollision(nextMove)
+            // this.detectCollision(nextMove)
+
+            this.clearCanvas()
+            this.currentShape.update(nextMove)
+            this.drawShapes()
 
             if(!this.currentShape.isColliding){
                 this.clearCanvas()
@@ -82,12 +86,6 @@ class GameManager {
                             && (nextMove.y + this.blockSize * block.y) >= (pileShape.y + this.blockSize * pileBlock.y)){
                             colliding = true
                         }
-                    }
-
-                    if(nextMove.x){
-                        if((this.currentShape.y + this.blockSize * block.y) === (pileShape.y + this.blockSize * pileBlock.y)
-                            && (nextMove.x + this.blockSize * block.x) === (pileShape.x + this.blockSize * pileBlock.x))
-                            colliding = true
                     }
                 })
             })
