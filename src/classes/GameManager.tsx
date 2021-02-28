@@ -73,8 +73,7 @@ class GameManager {
         let colliding = false
         if(this.pile.length > 0){
             this.pile.forEach(shape => {
-                if(shape.isColliding
-                    && this.currentShape.x + this.currentShape.width > shape.x
+                if(this.currentShape.x + this.currentShape.width > shape.x
                     && this.currentShape.x < shape.x + shape.width){
 
                     if(this.currentShape.y + this.currentShape.height >= shape.y){
@@ -92,7 +91,7 @@ class GameManager {
         let position: any = {}
         switch (direction){
             case Controls.MoveDirection.Up:
-
+                // Rotate
                 break
             case Controls.MoveDirection.Down:
                 position = { y: this.currentShape.y + this.blockSize }
