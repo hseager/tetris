@@ -81,7 +81,7 @@ class GameManager {
             pileShape.blocks.forEach(pileBlock => {
                 this.currentShape.blocks.forEach(block => {
                     if(nextMove.y){
-                        if(block.x === pileBlock.x && block.y >= pileBlock.y){
+                        if(block.x === pileBlock.x && block.y + (nextMove.y - this.currentShape.y) >= pileBlock.y){
                             colliding = true
                         }
                     }
@@ -119,12 +119,11 @@ class GameManager {
         // Check board x boundaries
         // if(nextMove.x && nextMove.x + this.currentShape.width > this.width || nextMove.x && nextMove.x < 0) return
 
-        //this.detectCollision(nextMove)
-        if(this.currentShape.isColliding) return
-
-        this.clearCanvas()
-        this.currentShape.update(nextMove)
-        this.drawShapes()
+        if(!this.detectCollision(nextMove)){
+            this.clearCanvas()
+            this.currentShape.update(nextMove)
+            this.drawShapes()
+        }
     }
 }
 
