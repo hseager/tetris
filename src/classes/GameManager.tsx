@@ -75,7 +75,6 @@ class GameManager {
     }
     collidingWithPile(nextMove: Position): boolean{
         if(this.pile.length === 0) return false
-
         let colliding = false
         this.pile.forEach(pileShape => {
             pileShape.blocks.forEach(pileBlock => {
@@ -88,7 +87,6 @@ class GameManager {
                 })
             })
         })
-
         return colliding
     }
     collidingWithFloor(nextMove: Position): boolean{
@@ -116,14 +114,25 @@ class GameManager {
                 break
         }
 
-        // Check board x boundaries
-        // if(nextMove.x && nextMove.x + this.currentShape.width > this.width || nextMove.x && nextMove.x < 0) return
+        if(!this.validMovement(nextMove)) return
 
         if(!this.detectCollision(nextMove)){
             this.clearCanvas()
             this.currentShape.update(nextMove)
             this.drawShapes()
         }
+    }
+    validMovement(nextMove: Position): boolean{
+        let validMove = true
+        if(nextMove.x && nextMove.x <= 0)
+            validMove = false
+
+        this.currentShape.blocks.forEach(block => {
+            if(nextMove.x && block.x + (nextMove.x - this.currentShape.x) >= this.width)
+                validMove = false
+        })
+        
+        return validMove
     }
 }
 

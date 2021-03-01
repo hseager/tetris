@@ -17,20 +17,6 @@ class Shape extends GameObject {
         this.blocks = this.createBlocks()
         this.color = ShapeManager.getShapeColor(this.type)
     }
-    get width(){
-        let width = 0
-        this.blocks.forEach(block => {
-            width = block.x >= width ? block.x : width
-        })
-        return (width + 1) * this.blockSize
-    }
-    get height(){
-        let height = 0
-        this.blocks.forEach(block => {
-            height = block.y >= height ? block.y : height
-        })
-        return (height + 1) * this.blockSize
-    }
     draw(){
         if(!this.context) return
 
