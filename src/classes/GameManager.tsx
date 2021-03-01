@@ -65,13 +65,10 @@ class GameManager {
         })
     }
     detectCollision(nextMove: Position): boolean{
-        if(this.collidingWithPile(nextMove) || this.collidingWithFloor(nextMove)){
-            this.currentShape.isColliding = true
+        if(this.collidingWithPile(nextMove) || this.collidingWithFloor(nextMove))
             return true
-        } else {
+        else
             return false
-        }
-            
     }
     collidingWithPile(nextMove: Position): boolean{
         if(this.pile.length === 0) return false
@@ -79,11 +76,9 @@ class GameManager {
         this.pile.forEach(pileShape => {
             pileShape.blocks.forEach(pileBlock => {
                 this.currentShape.blocks.forEach(block => {
-                    if(nextMove.y){
-                        if(block.x === pileBlock.x && block.y + (nextMove.y - this.currentShape.y) >= pileBlock.y){
+                    if(nextMove.y)
+                        if(block.x === pileBlock.x && block.y + (nextMove.y - this.currentShape.y) === pileBlock.y)
                             colliding = true
-                        }
-                    }
                 })
             })
         })
@@ -130,6 +125,16 @@ class GameManager {
         this.currentShape.blocks.forEach(block => {
             if(nextMove.x && block.x + (nextMove.x - this.currentShape.x) >= this.width)
                 validMove = false
+        })
+
+        this.pile.forEach(pileShape => {
+            pileShape.blocks.forEach(pileBlock => {
+                this.currentShape.blocks.forEach(block => {
+                    if(nextMove.x)
+                        if(block.y === pileBlock.y && block.x + (nextMove.x - this.currentShape.x) <= pileBlock.x)
+                            validMove = false
+                })
+            })
         })
         
         return validMove
