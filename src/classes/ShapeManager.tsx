@@ -1,5 +1,4 @@
 import shapes from '../data/shapes'
-import Block from './Block'
 
 class ShapeManager {
     static getRandomShapeType(){

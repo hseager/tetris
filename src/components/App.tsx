@@ -1,8 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Board from './Board'
 import NextShape from './NextShape'
 import Controls from '../classes/Controls'
 import GameManager from '../classes/GameManager'
+import Shape from '../classes/Shape'
+import GameEvents from '../classes/GameEvents'
 
 function App() {
     const [score, setScore] = useState(0)
@@ -13,10 +15,16 @@ function App() {
     const [height, setHeight] = useState(400)
     const [blockSize, setBlockSize] = useState(width / columns)
     const [game, setGame] = useState<GameManager>(new GameManager(width, height, blockSize))
+    const [nextShape, setNextShape] = useState<Shape>(game.nextShape)
+
+    useEffect(() => {
+        GameEvents.changeNextShape = setNextShape
+    },[])
     
     const play = () => {
         setPlaying(true)
         game.start()
+        setNextShape(game.nextShape)
         document.addEventListener('keydown', onKeyPressed)
     }
 
@@ -43,7 +51,7 @@ function App() {
             <p className="py-2">Score: {score}</p>
             <div className="flex items-start">
                 <Board game={game} setGame={setGame} />
-                <NextShape shape={game.nextShape} playing={playing}/>
+                <NextShape shape={nextShape} playing={playing}/>
             </div>
             {
                 !playing && <button className="btn" onClick={play}>Play</button>

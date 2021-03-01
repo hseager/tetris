@@ -1,6 +1,7 @@
 import Shape from './Shape'
 import Controls from './Controls'
 import Position from './Position'
+import GameEvents from './GameEvents'
 
 class GameManager {
     boardContext: CanvasRenderingContext2D | null
@@ -48,7 +49,9 @@ class GameManager {
                 this.drawShapes()
             } else {
                 this.pile.push(this.currentShape)
-                this.currentShape = new Shape(this.boardContext, 80, -60, this.blockSize)
+                this.currentShape = this.nextShape
+                this.nextShape = new Shape(this.boardContext, 80, -60, this.blockSize)
+                GameEvents.changeNextShape(this.nextShape)
             }
 
             this.lastTick = this.timePassed + this.gameSpeed

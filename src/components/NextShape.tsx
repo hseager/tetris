@@ -1,7 +1,7 @@
 import Shape from '../classes/Shape'
 
 interface NextShapeProps {
-    shape: Shape | undefined
+    shape: Shape
     playing: boolean
 }
 

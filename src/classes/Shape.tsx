@@ -19,7 +19,6 @@ class Shape extends GameObject {
     }
     draw(){
         if(!this.context) return
-
         this.context.fillStyle = this.color
         this.blocks.forEach(block => {
             this.context?.fillRect(block.x, block.y, this.blockSize, this.blockSize)
