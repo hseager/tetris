@@ -105,7 +105,7 @@ class GameManager {
         let nextMove: Position = {}
         switch (direction){
             case Controls.MoveDirection.Up:
-                // Rotate
+                this.currentShape.rotate()
                 break
             case Controls.MoveDirection.Down:
                 nextMove = { y: this.currentShape.y + this.blockSize }

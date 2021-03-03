@@ -44,6 +44,15 @@ class Shape extends GameObject {
         })
         return blocks
     }
+    rotate(){
+        const shapeData = ShapeManager.getShape(this.type)
+        const rotation = shapeData.rotations[this.rotation]
+        if(rotation) 
+            this.rotation++
+        else
+            this.rotation = 0
+        
+    }
 }
 
 export default Shape
