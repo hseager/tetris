@@ -1,18 +1,31 @@
-import Shape from '../classes/Shape'
+import { useEffect, useRef } from 'react'
+import GameManager from '../classes/GameManager'
 
 interface NextShapeProps {
-    shape: Shape
-    playing: boolean
+    game: GameManager,
+    setGame: React.Dispatch<React.SetStateAction<GameManager>>
 }
 
-function NextShape({shape, playing} : NextShapeProps){
+function NextShape({ game, setGame } : NextShapeProps){
+    const nextShapeCanvasRef = useRef<HTMLCanvasElement | null>(null)
+    const width = 80
+    const height = 80
+
+    useEffect(() => {
+        const nextShapeCanvas = nextShapeCanvasRef.current?.getContext('2d')
+        if(nextShapeCanvas){
+            game.nextShapeCanvas = nextShapeCanvas
+            game.nextShape.context = nextShapeCanvas
+            setGame(game)
+        }
+    },[])
+
     return (
-        <div className="border-solid border-8 border-gray-300 bg-white rounded-md p-4 w-20 h-20">
-            { 
-                playing &&
-                shape?.color
-            }
-        </div>
+        <canvas 
+            ref={nextShapeCanvasRef}
+            width={width}
+            height={height}
+            className="border-solid border-8 border-gray-300 bg-white rounded-md w-20 h-20" />
     )
 }
 

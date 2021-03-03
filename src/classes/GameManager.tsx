@@ -1,10 +1,10 @@
 import Shape from './Shape'
 import Controls from './Controls'
 import Position from './Position'
-import GameEvents from './GameEvents'
 
 class GameManager {
     boardContext: CanvasRenderingContext2D | null
+    nextShapeCanvas: CanvasRenderingContext2D | null
     width: number
     height: number
     blockSize: number
@@ -15,14 +15,17 @@ class GameManager {
     private timePassed: number
     private lastTick: number
     private pile: Array<Shape>
+    private boardStartingX = 80
+    private boardStartingY = -60
 
     constructor(width: number, height: number, blockSize: number){
         this.boardContext = null
+        this.nextShapeCanvas = null
         this.width = width
         this.height = height
         this.blockSize = blockSize
-        this.currentShape = new Shape(this.boardContext, 80, -60, blockSize)
-        this.nextShape = new Shape(this.boardContext, 80, -60, blockSize)
+        this.currentShape = new Shape(this.boardContext, this.boardStartingX, this.boardStartingY, blockSize)
+        this.nextShape = new Shape(this.nextShapeCanvas, 10, 10, blockSize)
         this.oldTimeStamp = 0
         this.timePassed = 0
         this.gameSpeed = 0.3
@@ -50,8 +53,9 @@ class GameManager {
             } else {
                 this.pile.push(this.currentShape)
                 this.currentShape = this.nextShape
-                this.nextShape = new Shape(this.boardContext, 80, -60, this.blockSize)
-                GameEvents.changeNextShape(this.nextShape)
+                this.currentShape.context = this.boardContext
+                this.currentShape.update({ x: this.boardStartingX, y: this.boardStartingY })
+                this.nextShape = new Shape(this.nextShapeCanvas, 10, 10, this.blockSize)
             }
 
             this.lastTick = this.timePassed + this.gameSpeed
@@ -60,8 +64,10 @@ class GameManager {
     }
     clearCanvas(){
         this.boardContext?.clearRect(0, 0, this.width, this.height)
+        this.nextShapeCanvas?.clearRect(0, 0, this.width, this.height)
     }
     drawShapes(){
+        this.nextShape.draw()
         this.currentShape.draw()
         this.pile.forEach(shape => {
             shape.draw()

@@ -14,7 +14,6 @@ function Board({ game, setGame } : BoardProps) {
         if(boardContext){
             game.boardContext = boardContext
             game.currentShape.context = boardContext
-            game.nextShape.context = boardContext
             setGame(game)
         }
     },[])
