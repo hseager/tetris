@@ -46,12 +46,13 @@ class Shape extends GameObject {
     }
     rotate(){
         const shapeData = ShapeManager.getShape(this.type)
-        const rotation = shapeData.rotations[this.rotation]
-        if(rotation) 
+        if(this.rotation < shapeData.rotations.length - 1)
             this.rotation++
         else
             this.rotation = 0
-        
+
+        this.blocks = []
+        this.blocks = this.createBlocks()
     }
 }
 
