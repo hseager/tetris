@@ -9,6 +9,9 @@ class Shape extends GameObject {
     type: number
     rotation: number
     blocks: Array<Block>
+    private strokeSize = 2
+    private strokeColor = '#333'
+
     constructor(context: CanvasRenderingContext2D | null, position: Position, blockSize: number){
         super(context, position)
         this.blockSize = blockSize
@@ -21,7 +24,14 @@ class Shape extends GameObject {
         if(!this.context) return
         this.context.fillStyle = this.color
         this.blocks.forEach(block => {
-            this.context?.fillRect(block.position.x, block.position.y, this.blockSize, this.blockSize)
+            if(this.context){
+                this.context.beginPath()
+                this.context.rect(block.position.x, block.position.y, this.blockSize, this.blockSize)
+                this.context.fill()
+                this.context.lineWidth = this.strokeSize
+                this.context.strokeStyle = this.strokeColor
+                this.context.stroke()
+            }
         })
     }
     update(position: Position){
