@@ -1,12 +1,12 @@
+import Position from './Position'
+
 class GameObject {
     context: CanvasRenderingContext2D | null
-    x: number
-    y: number
+    position: Position
     isColliding: boolean
-    constructor(context: CanvasRenderingContext2D | null, x: number, y: number){
+    constructor(context: CanvasRenderingContext2D | null, position: Position){
         this.context = context
-        this.x = x
-        this.y = y
+        this.position = position
         this.isColliding = false
     }
 }

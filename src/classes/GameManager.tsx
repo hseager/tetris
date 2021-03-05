@@ -15,8 +15,8 @@ class GameManager {
     private timePassed: number
     private lastTick: number
     private pile: Array<Shape>
-    private boardStartingX = 80
-    private boardStartingY = -60
+    private currentShapeStartingPosition: Position = { x: 80, y: -60 }
+    private nextShapeStartingPosition: Position = { x: 10, y: 10 }
 
     constructor(width: number, height: number, blockSize: number){
         this.boardContext = null
@@ -24,8 +24,8 @@ class GameManager {
         this.width = width
         this.height = height
         this.blockSize = blockSize
-        this.currentShape = new Shape(this.boardContext, this.boardStartingX, this.boardStartingY, blockSize)
-        this.nextShape = new Shape(this.nextShapeCanvas, 10, 10, blockSize)
+        this.currentShape = new Shape(this.boardContext, this.currentShapeStartingPosition, blockSize)
+        this.nextShape = new Shape(this.nextShapeCanvas, this.nextShapeStartingPosition, blockSize)
         this.oldTimeStamp = 0
         this.timePassed = 0
         this.gameSpeed = 0.3
@@ -44,7 +44,7 @@ class GameManager {
         this.timePassed += secondsPassed
 
         if(this.timePassed >= this.lastTick){
-            let nextMove: Position = { y: this.currentShape.y + this.blockSize }
+            let nextMove: Position = { x: this.currentShape.position.x, y: this.currentShape.position.y + this.blockSize }
             
             if(!this.detectCollision(nextMove)){
                 this.clearCanvas()
@@ -54,8 +54,8 @@ class GameManager {
                 this.pile.push(this.currentShape)
                 this.currentShape = this.nextShape
                 this.currentShape.context = this.boardContext
-                this.currentShape.update({ x: this.boardStartingX, y: this.boardStartingY })
-                this.nextShape = new Shape(this.nextShapeCanvas, 10, 10, this.blockSize)
+                this.currentShape.update(this.currentShapeStartingPosition)
+                this.nextShape = new Shape(this.nextShapeCanvas, this.nextShapeStartingPosition, this.blockSize)
             }
 
             this.lastTick = this.timePassed + this.gameSpeed
@@ -86,7 +86,7 @@ class GameManager {
             pileShape.blocks.forEach(pileBlock => {
                 this.currentShape.blocks.forEach(block => {
                     if(nextMove.y)
-                        if(block.x === pileBlock.x && block.y + (nextMove.y - this.currentShape.y) === pileBlock.y)
+                        if(block.position.x === pileBlock.position.x && block.position.y + (nextMove.y - this.currentShape.position.y) === pileBlock.position.y)
                             colliding = true
                 })
             })
@@ -96,25 +96,25 @@ class GameManager {
     collidingWithFloor(nextMove: Position): boolean{
         let colliding = false
         this.currentShape.blocks.forEach(block => {
-            if(nextMove.y && block.y + (nextMove.y - this.currentShape.y) >= this.height)
+            if(nextMove.y && block.position.y + (nextMove.y - this.currentShape.position.y) >= this.height)
                 colliding = true
         })
         return colliding
     }
     moveShape(direction: number){
-        let nextMove: Position = {}
+        let nextMove: Position = {...this.currentShape.position}
         switch (direction){
             case Controls.MoveDirection.Up:
                 this.currentShape.rotate()
                 break
             case Controls.MoveDirection.Down:
-                nextMove = { y: this.currentShape.y + this.blockSize }
+                nextMove.y = nextMove.y + this.blockSize
                 break
             case Controls.MoveDirection.Left:
-                nextMove = { x: this.currentShape.x - this.blockSize }
+                nextMove.x = nextMove.x - this.blockSize
                 break
             case Controls.MoveDirection.Right:
-                nextMove = { x: this.currentShape.x + this.blockSize }
+                nextMove.x = nextMove.x + this.blockSize
                 break
         }
 
@@ -132,7 +132,7 @@ class GameManager {
             validMove = false
 
         this.currentShape.blocks.forEach(block => {
-            if(nextMove.x && block.x + (nextMove.x - this.currentShape.x) >= this.width)
+            if(nextMove.x && block.position.x + (nextMove.x - this.currentShape.position.x) >= this.width)
                 validMove = false
         })
 
@@ -140,7 +140,7 @@ class GameManager {
             pileShape.blocks.forEach(pileBlock => {
                 this.currentShape.blocks.forEach(block => {
                     if(nextMove.x)
-                        if(block.y === pileBlock.y && block.x + (nextMove.x - this.currentShape.x) === pileBlock.x)
+                        if(block.position.y === pileBlock.position.y && block.position.x + (nextMove.x - this.currentShape.position.x) === pileBlock.position.x)
                             validMove = false
                 })
             })

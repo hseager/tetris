@@ -1,8 +1,9 @@
 import GameObject from './GameObject'
+import Position from './Position'
 
 class Block extends GameObject {
-    constructor(context: CanvasRenderingContext2D | null, x: number, y: number){
-        super(context, x, y)
+    constructor(context: CanvasRenderingContext2D | null, position: Position){
+        super(context, position)
     }
 }
 

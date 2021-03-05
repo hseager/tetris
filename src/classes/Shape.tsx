@@ -9,8 +9,8 @@ class Shape extends GameObject {
     type: number
     rotation: number
     blocks: Array<Block>
-    constructor(context: CanvasRenderingContext2D | null, x: number, y: number, blockSize: number){
-        super(context, x, y)
+    constructor(context: CanvasRenderingContext2D | null, position: Position, blockSize: number){
+        super(context, position)
         this.blockSize = blockSize
         this.type = ShapeManager.getRandomShapeType()
         this.rotation = 0
@@ -21,16 +21,15 @@ class Shape extends GameObject {
         if(!this.context) return
         this.context.fillStyle = this.color
         this.blocks.forEach(block => {
-            this.context?.fillRect(block.x, block.y, this.blockSize, this.blockSize)
+            this.context?.fillRect(block.position.x, block.position.y, this.blockSize, this.blockSize)
         })
     }
-    update({ x = this.x, y = this.y }: Position){
+    update(position: Position){
         this.blocks.forEach(block => {
-            block.x += (x - this.x)
-            block.y += (y - this.y)
+            block.position.x += (position.x - this.position.x)
+            block.position.y += (position.y - this.position.y)
         })
-        this.x = x
-        this.y = y
+        this.position = position
     }
     createBlocks(){
         const shapeData = ShapeManager.getShape(this.type)
@@ -39,7 +38,7 @@ class Shape extends GameObject {
         blockData.forEach((row, y) => {
             row.forEach((column, x) => {
                 if(column)
-                    blocks.push(new Block(this.context, this.x + this.blockSize * x, this.y + this.blockSize * y))
+                    blocks.push(new Block(this.context, { x: this.position.x + this.blockSize * x, y: this.position.y + this.blockSize * y }))
             })
         })
         return blocks
