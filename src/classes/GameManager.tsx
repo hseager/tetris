@@ -1,6 +1,7 @@
 import Shape from './Shape'
 import Controls from './Controls'
 import Position from './Position'
+import CollisionDetection from './CollisionDetection'
 
 class GameManager {
     boardContext: CanvasRenderingContext2D | null
@@ -74,32 +75,10 @@ class GameManager {
         })
     }
     detectCollision(nextMove: Position): boolean{
-        if(this.collidingWithPile(nextMove) || this.collidingWithFloor(nextMove))
+        if(CollisionDetection.collidingWithPile(nextMove, this.currentShape, this.pile) || CollisionDetection.collidingWithFloor(nextMove, this.currentShape, this.height))
             return true
         else
             return false
-    }
-    collidingWithPile(nextMove: Position): boolean{
-        if(this.pile.length === 0) return false
-        let colliding = false
-        this.pile.forEach(pileShape => {
-            pileShape.blocks.forEach(pileBlock => {
-                this.currentShape.blocks.forEach(block => {
-                    if(nextMove.y)
-                        if(block.position.x === pileBlock.position.x && block.position.y + (nextMove.y - this.currentShape.position.y) === pileBlock.position.y)
-                            colliding = true
-                })
-            })
-        })
-        return colliding
-    }
-    collidingWithFloor(nextMove: Position): boolean{
-        let colliding = false
-        this.currentShape.blocks.forEach(block => {
-            if(nextMove.y && block.position.y + (nextMove.y - this.currentShape.position.y) >= this.height)
-                colliding = true
-        })
-        return colliding
     }
     moveShape(direction: number){
         let nextMove: Position = {...this.currentShape.position}
