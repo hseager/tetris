@@ -140,7 +140,7 @@ class GameManager {
             pileShape.blocks.forEach(pileBlock => {
                 this.currentShape.blocks.forEach(block => {
                     if(nextMove.x)
-                        if(block.y === pileBlock.y && block.x + (nextMove.x - this.currentShape.x) <= pileBlock.x)
+                        if(block.y === pileBlock.y && block.x + (nextMove.x - this.currentShape.x) === pileBlock.x)
                             validMove = false
                 })
             })
