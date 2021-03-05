@@ -9,7 +9,7 @@ class Shape {
     rotation: number
     blocks: Array<Block>
     color: string
-    _position: Position
+    private _position: Position
     private strokeSize = 2
     private strokeColor = '#333'
 

@@ -2,6 +2,8 @@ import Shape from './Shape'
 import Controls from './Controls'
 import Position from './Position'
 import CollisionDetection from './CollisionDetection'
+const clone = require('lodash/cloneDeep')
+const isEqual = require('lodash/isEqual')
 
 class GameManager {
     boardContext: CanvasRenderingContext2D | null
@@ -110,16 +112,19 @@ class GameManager {
         }
     }
     validMovement(nextMove: Position): boolean{
+        let testShape: Shape = clone(this.currentShape)
+        testShape.position = nextMove
         let validMove = true
-        if(nextMove.x && nextMove.x <= 0)
+
+        if(nextMove.x < 0)
             validMove = false
 
-        if(this.currentShape.blocks.some(block => nextMove.x && block.position.x + (nextMove.x - this.currentShape.position.x) >= this.width))
+        if(testShape.blocks.some(block => block.position.x >= this.width))
             validMove = false
 
         this.pile.forEach(pileShape => {
             pileShape.blocks.forEach(pileBlock => {
-                if(this.currentShape.blocks.some(block => block.position.y === pileBlock.position.y && block.position.x + (nextMove.x - this.currentShape.position.x) === pileBlock.position.x))
+                if(testShape.blocks.some(block => isEqual(block.position, pileBlock.position)))
                     validMove = false
             })
         })
