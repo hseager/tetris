@@ -48,20 +48,26 @@ class GameManager {
             let nextMove: Position = { x: this.currentShape.position.x, y: this.currentShape.position.y + this.blockSize }
             
             if(!this.detectCollision(nextMove)){
-                this.clearCanvas()
-                this.currentShape.update(nextMove)
-                this.drawShapes()
+                this.updateBoard(nextMove)
             } else {
-                this.pile.push(this.currentShape)
-                this.currentShape = this.nextShape
-                this.currentShape.context = this.boardContext
-                this.currentShape.update(this.currentShapeStartingPosition)
-                this.nextShape = new Shape(this.nextShapeCanvas, this.nextShapeStartingPosition, this.blockSize)
+                this.createNewShape()
             }
 
             this.lastTick = this.timePassed + this.gameSpeed
         }
         window.requestAnimationFrame((timeStamp) => { this.gameLoop(timeStamp) })
+    }
+    createNewShape(){
+        this.pile.push(this.currentShape)
+        this.currentShape = this.nextShape
+        this.currentShape.context = this.boardContext
+        this.currentShape.update(this.currentShapeStartingPosition)
+        this.nextShape = new Shape(this.nextShapeCanvas, this.nextShapeStartingPosition, this.blockSize)
+    }
+    updateBoard(nextMove: Position){
+        this.clearCanvas()
+        this.currentShape.update(nextMove)
+        this.drawShapes()
     }
     clearCanvas(){
         this.boardContext?.clearRect(0, 0, this.width, this.height)
@@ -100,9 +106,7 @@ class GameManager {
         if(!this.validMovement(nextMove)) return
 
         if(!this.detectCollision(nextMove)){
-            this.clearCanvas()
-            this.currentShape.update(nextMove)
-            this.drawShapes()
+            this.updateBoard(nextMove)
         }
     }
     validMovement(nextMove: Position): boolean{
