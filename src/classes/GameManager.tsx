@@ -131,18 +131,13 @@ class GameManager {
         if(nextMove.x && nextMove.x <= 0)
             validMove = false
 
-        this.currentShape.blocks.forEach(block => {
-            if(nextMove.x && block.position.x + (nextMove.x - this.currentShape.position.x) >= this.width)
-                validMove = false
-        })
+        if(this.currentShape.blocks.some(block => nextMove.x && block.position.x + (nextMove.x - this.currentShape.position.x) >= this.width))
+            validMove = false
 
         this.pile.forEach(pileShape => {
             pileShape.blocks.forEach(pileBlock => {
-                this.currentShape.blocks.forEach(block => {
-                    if(nextMove.x)
-                        if(block.position.y === pileBlock.position.y && block.position.x + (nextMove.x - this.currentShape.position.x) === pileBlock.position.x)
-                            validMove = false
-                })
+                if(this.currentShape.blocks.some(block => block.position.y === pileBlock.position.y && block.position.x + (nextMove.x - this.currentShape.position.x) === pileBlock.position.x))
+                    validMove = false
             })
         })
         
