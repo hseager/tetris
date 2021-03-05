@@ -16,8 +16,8 @@ class CollisionDetection {
     }
     static collidingWithFloor(nextMove: Position, currentShape: Shape, height: number): boolean {
         let testShape: Shape = clone(currentShape)
-        testShape.update(nextMove)
-        
+        testShape.position = nextMove
+
         if(testShape.blocks.some(block => block.position.y >= height))
             return true
         return false

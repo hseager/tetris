@@ -61,12 +61,12 @@ class GameManager {
         this.pile.push(this.currentShape)
         this.currentShape = this.nextShape
         this.currentShape.context = this.boardContext
-        this.currentShape.update(this.currentShapeStartingPosition)
+        this.currentShape.position = this.currentShapeStartingPosition
         this.nextShape = new Shape(this.nextShapeCanvas, this.nextShapeStartingPosition, this.blockSize)
     }
     updateBoard(nextMove: Position){
         this.clearCanvas()
-        this.currentShape.update(nextMove)
+        this.currentShape.position = nextMove
         this.drawShapes()
     }
     clearCanvas(){

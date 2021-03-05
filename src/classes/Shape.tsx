@@ -1,24 +1,34 @@
-import GameObject from './GameObject'
 import Position from './Position'
 import ShapeManager from './ShapeManager'
 import Block from './Block'
 
-class Shape extends GameObject {
-    color: string
+class Shape {
+    context: CanvasRenderingContext2D | null
     blockSize: number
     type: number
     rotation: number
     blocks: Array<Block>
+    color: string
+    _position: Position
     private strokeSize = 2
     private strokeColor = '#333'
 
     constructor(context: CanvasRenderingContext2D | null, position: Position, blockSize: number){
-        super(context, position)
+        this.context = context
         this.blockSize = blockSize
         this.type = ShapeManager.getRandomShapeType()
         this.rotation = 0
         this.blocks = this.createBlocks()
         this.color = ShapeManager.getShapeColor(this.type)
+        this._position = position
+        this.position = position
+    }
+    get position(){
+        return this._position
+    }
+    set position(position: Position){
+        this.blocks.forEach(block => { block.shapePosition = position })
+        this._position = position
     }
     draw(){
         if(!this.context) return
@@ -33,10 +43,6 @@ class Shape extends GameObject {
                 this.context.stroke()
             }
         })
-    }
-    update(position: Position){
-        this.blocks.forEach(block => { block.shapePosition = position })
-        this.position = position
     }
     createBlocks(){
         const shapeData = ShapeManager.getShape(this.type)
