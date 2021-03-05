@@ -35,10 +35,7 @@ class Shape extends GameObject {
         })
     }
     update(position: Position){
-        this.blocks.forEach(block => {
-            block.position.x += (position.x - this.position.x)
-            block.position.y += (position.y - this.position.y)
-        })
+        this.blocks.forEach(block => { block.shapePosition = position })
         this.position = position
     }
     createBlocks(){
@@ -48,7 +45,7 @@ class Shape extends GameObject {
         blockData.forEach((row, y) => {
             row.forEach((column, x) => {
                 if(column)
-                    blocks.push(new Block(this.context, { x: this.position.x + this.blockSize * x, y: this.position.y + this.blockSize * y }))
+                    blocks.push(new Block(this.position, this.blockSize, x, y))
             })
         })
         return blocks

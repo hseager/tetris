@@ -1,9 +1,18 @@
-import GameObject from './GameObject'
 import Position from './Position'
 
-class Block extends GameObject {
-    constructor(context: CanvasRenderingContext2D | null, position: Position){
-        super(context, position)
+class Block {
+    shapePosition: Position
+    blockSize: number
+    x: number
+    y: number
+    constructor(shapePosition: Position, blockSize: number, x: number, y: number){
+        this.shapePosition = shapePosition
+        this.blockSize = blockSize
+        this.x = x
+        this.y = y
+    }
+    get position(): Position {
+        return { x: this.shapePosition.x + this.blockSize * this.x, y: this.shapePosition.y + this.blockSize * this.y }
     }
 }
 
