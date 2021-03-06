@@ -124,14 +124,10 @@ class GameManager {
         if(nextMoveShape.blocks.some(block => block.position.x >= this.width))
             return false
 
-        let validMove = true
-        this.pile.forEach(pileShape => {
-            pileShape.blocks.forEach(pileBlock => {
-                if(nextMoveShape.blocks.some(block => isEqual(block.position, pileBlock.position)))
-                    validMove = false
-            })
-        })
-        return validMove
+        if(CollisionDetection.collidingWithPile(nextMoveShape, this.pile))
+            return false
+
+        return true
     }
 }
 

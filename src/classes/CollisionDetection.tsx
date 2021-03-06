@@ -5,7 +5,6 @@ class CollisionDetection {
     static collidingWithPile(shape: Shape, pile: Array<Shape>): boolean {
         if(pile.length === 0) return false
         let colliding = false
-        
         pile.forEach(pileShape => {
             pileShape.blocks.forEach(pileBlock => {
                 if(shape.blocks.some(block => isEqual(block.position, pileBlock.position)))
