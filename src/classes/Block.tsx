@@ -3,8 +3,8 @@ import Position from './Position'
 class Block {
     shapePosition: Position
     blockSize: number
-    x: number
-    y: number
+    private x: number
+    private y: number
     constructor(shapePosition: Position, blockSize: number, x: number, y: number){
         this.shapePosition = shapePosition
         this.blockSize = blockSize

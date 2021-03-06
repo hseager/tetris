@@ -11,11 +11,19 @@ class CollisionDetection {
                     colliding = true
             })
         })
+
         return colliding
     }
     static collidingWithFloor(shape: Shape, height: number): boolean {
         if(shape.blocks.some(block => block.position.y >= height))
             return true
+
+        return false
+    }
+    static collidingWithWalls(shape: Shape, width: number){
+        if(shape.blocks.some(block => block.position.x >= width || block.position.x < 0))
+            return true
+        
         return false
     }
 }

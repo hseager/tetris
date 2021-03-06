@@ -86,7 +86,9 @@ class GameManager {
         let nextMoveShape: Shape = clone(this.currentShape)
         nextMoveShape.position = nextMove
 
-        if(CollisionDetection.collidingWithPile(nextMoveShape, this.pile) || CollisionDetection.collidingWithFloor(nextMoveShape, this.height))
+        if(CollisionDetection.collidingWithPile(nextMoveShape, this.pile) 
+            || CollisionDetection.collidingWithFloor(nextMoveShape, this.height)
+            || CollisionDetection.collidingWithWalls(nextMoveShape, this.width))
             return true
         else
             return false
@@ -108,26 +110,8 @@ class GameManager {
                 break
         }
 
-        if(!this.validMovement(nextMove)) return
-
-        if(!this.detectCollision(nextMove)){
+        if(!this.detectCollision(nextMove))
             this.updateBoard(nextMove)
-        }
-    }
-    validMovement(nextMove: Position): boolean{
-        let nextMoveShape: Shape = clone(this.currentShape)
-        nextMoveShape.position = nextMove
-        
-        if(nextMove.x < 0)
-            return false
-
-        if(nextMoveShape.blocks.some(block => block.position.x >= this.width))
-            return false
-
-        if(CollisionDetection.collidingWithPile(nextMoveShape, this.pile))
-            return false
-
-        return true
     }
 }
 
