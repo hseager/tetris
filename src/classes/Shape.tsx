@@ -1,11 +1,12 @@
 import Position from './Position'
-import ShapeManager from './ShapeManager'
+import ShapeRepository from './ShapeRepository'
 import Block from './Block'
+import ShapeData from './ShapeData'
 
 class Shape {
     context: CanvasRenderingContext2D | null
     blockSize: number
-    type: number
+    data: ShapeData
     rotation: number
     blocks: Array<Block>
     color: string
@@ -16,10 +17,10 @@ class Shape {
     constructor(context: CanvasRenderingContext2D | null, position: Position, blockSize: number){
         this.context = context
         this.blockSize = blockSize
-        this.type = ShapeManager.getRandomShapeType()
+        this.data = ShapeRepository.getRandomShape()
         this.rotation = 0
         this.blocks = this.createBlocks()
-        this.color = ShapeManager.getShapeColor(this.type)
+        this.color = this.data.color
         this._position = position
         this.position = position
     }
@@ -45,8 +46,7 @@ class Shape {
         })
     }
     createBlocks(){
-        const shapeData = ShapeManager.getShape(this.type)
-        const blockData = shapeData.rotations[this.rotation]
+        const blockData = this.data.rotations[this.rotation]
         let blocks: Array<Block> = []
         blockData.forEach((row, y) => {
             row.forEach((column, x) => {
@@ -57,8 +57,7 @@ class Shape {
         return blocks
     }
     rotate(){
-        const shapeData = ShapeManager.getShape(this.type)
-        if(this.rotation < shapeData.rotations.length - 1)
+        if(this.rotation < this.data.rotations.length - 1)
             this.rotation++
         else
             this.rotation = 0

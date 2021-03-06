@@ -1,4 +1,6 @@
-const shapes = [
+import ShapeData from "../classes/ShapeData"
+
+const shapes: Array<ShapeData> = [
     {
         name: 'I',
         color: 'red',
