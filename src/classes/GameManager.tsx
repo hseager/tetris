@@ -2,8 +2,6 @@ import Shape from './Shape'
 import Controls from './Controls'
 import Position from './Position'
 import CollisionDetection from './CollisionDetection'
-const clone = require('lodash/cloneDeep')
-const isEqual = require('lodash/isEqual')
 
 class GameManager {
     boardContext: CanvasRenderingContext2D | null
@@ -49,7 +47,7 @@ class GameManager {
         if(this.timePassed >= this.lastTick){
             let nextMove: Position = { x: this.currentShape.position.x, y: this.currentShape.position.y + this.blockSize }
             
-            if(!this.detectCollision(nextMove)){
+            if(!CollisionDetection.detectCollision(nextMove, this.currentShape, this.pile, this.width, this.height)){
                 this.updateBoard(nextMove)
             } else {
                 this.createNewShape()
@@ -82,17 +80,6 @@ class GameManager {
             shape.draw()
         })
     }
-    detectCollision(nextMove: Position): boolean {
-        let nextMoveShape: Shape = clone(this.currentShape)
-        nextMoveShape.position = nextMove
-
-        if(CollisionDetection.collidingWithPile(nextMoveShape, this.pile) 
-            || CollisionDetection.collidingWithFloor(nextMoveShape, this.height)
-            || CollisionDetection.collidingWithWalls(nextMoveShape, this.width))
-            return true
-        else
-            return false
-    }
     moveShape(direction: number){
         let nextMove: Position = {...this.currentShape.position}
         switch (direction){
@@ -110,7 +97,7 @@ class GameManager {
                 break
         }
 
-        if(!this.detectCollision(nextMove))
+        if(!CollisionDetection.detectCollision(nextMove, this.currentShape, this.pile, this.width, this.height))
             this.updateBoard(nextMove)
     }
 }
