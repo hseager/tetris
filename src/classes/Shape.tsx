@@ -12,7 +12,7 @@ class Shape {
     color: string
     private _position: Position
     private strokeSize = 2
-    private strokeColor = '#333'
+    private strokeColor = 'rgba(0, 0, 0, 0.3)'
 
     constructor(context: CanvasRenderingContext2D | null, position: Position, blockSize: number){
         this.context = context

@@ -3,7 +3,7 @@ import ShapeData from "../classes/ShapeData"
 const shapes: Array<ShapeData> = [
     {
         name: 'I',
-        color: 'red',
+        color: '#ffadad',
         rotations: [
             [
                 [1],
@@ -19,7 +19,7 @@ const shapes: Array<ShapeData> = [
     },
     {
         name: 'O',
-        color: 'yellow',
+        color: '#ffd6a5',
         rotations: [
             [
                 [1,1],
@@ -29,7 +29,7 @@ const shapes: Array<ShapeData> = [
     },
     {
         name: 'J',
-        color: 'blue',
+        color: '#fdffb6',
         rotations: [
             [
                 [0,1],
@@ -53,7 +53,7 @@ const shapes: Array<ShapeData> = [
     },
     {
         name: 'L',
-        color: 'green',
+        color: '#caffbf',
         rotations: [
             [
                 [1,0],
@@ -77,7 +77,7 @@ const shapes: Array<ShapeData> = [
     },
     {
         name: 'Z',
-        color: 'purple',
+        color: '#9bf6ff',
         rotations: [
             [
                 [1,1,0],
@@ -92,7 +92,7 @@ const shapes: Array<ShapeData> = [
     },
     {
         name: 'S',
-        color: 'orange',
+        color: '#a0c4ff',
         rotations: [
             [
                 [0,1,1],
@@ -107,7 +107,7 @@ const shapes: Array<ShapeData> = [
     },
     {
         name: 'T',
-        color: 'pink',
+        color: '#bdb2ff',
         rotations: [
             [
                 [0,1,0],
