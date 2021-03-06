@@ -1,16 +1,11 @@
-import Position from './Position'
 import Shape from './Shape'
 const isEqual = require('lodash/isEqual')
-const clone = require('lodash/cloneDeep')
 
 class CollisionDetection {
-    static detectCollision(nextMove: Position, currentShape: Shape, pile: Array<Shape>, width: number, height: number): boolean {
-        let nextMoveShape: Shape = clone(currentShape)
-        nextMoveShape.position = nextMove
-
-        if(CollisionDetection.collidingWithPile(nextMoveShape, pile)
-            || CollisionDetection.collidingWithFloor(nextMoveShape, height)
-            || CollisionDetection.collidingWithWalls(nextMoveShape, width))
+    static detectCollision(shape: Shape, pile: Array<Shape>, width: number, height: number): boolean {
+        if(CollisionDetection.collidingWithPile(shape, pile)
+            || CollisionDetection.collidingWithFloor(shape, height)
+            || CollisionDetection.collidingWithWalls(shape, width))
             return true
         else
             return false
