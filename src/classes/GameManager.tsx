@@ -84,9 +84,10 @@ class GameManager {
     }
     moveShape(direction: number){
         let nextMove: Position = {...this.currentShape.position}
+        let nextMoveShape: Shape = clone(this.currentShape)
         switch (direction){
             case Controls.MoveDirection.Up:
-                this.rotateShape()
+                nextMoveShape.rotate()
                 break
             case Controls.MoveDirection.Down:
                 nextMove.y = nextMove.y + this.blockSize
@@ -98,15 +99,10 @@ class GameManager {
                 nextMove.x = nextMove.x + this.blockSize
                 break
         }
-
-        let nextMoveShape: Shape = clone(this.currentShape)
         nextMoveShape.position = nextMove
 
         if(!CollisionDetection.detectCollision(nextMoveShape, this.pile, this.width, this.height))
             this.updateBoard(nextMoveShape)
-    }
-    rotateShape(){
-        this.currentShape.rotate()
     }
 }
 
