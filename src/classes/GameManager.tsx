@@ -114,14 +114,14 @@ class GameManager {
     validMovement(nextMove: Position): boolean{
         let testShape: Shape = clone(this.currentShape)
         testShape.position = nextMove
-        let validMove = true
-
+        
         if(nextMove.x < 0)
-            validMove = false
+            return false
 
         if(testShape.blocks.some(block => block.position.x >= this.width))
-            validMove = false
+            return false
 
+        let validMove = true
         this.pile.forEach(pileShape => {
             pileShape.blocks.forEach(pileBlock => {
                 if(testShape.blocks.some(block => isEqual(block.position, pileBlock.position)))
