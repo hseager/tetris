@@ -25,7 +25,7 @@ function NextShape({ game, setGame } : NextShapeProps){
             ref={nextShapeCanvasRef}
             width={width}
             height={height}
-            className="border-solid border-8 border-gray-300 bg-white rounded-md p-1 w-20 h-24" />
+            className="border-solid border-8 border-gray-300 bg-white rounded-md p-2 w-20 h-20" />
     )
 }
 

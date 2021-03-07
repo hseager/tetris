@@ -18,7 +18,7 @@ class GameManager {
     private lastTick: number
     private pile: Array<Shape>
     private currentShapeStartingPosition: Position = { x: 80, y: -60 }
-    private nextShapeStartingPosition: Position = { x: 0, y: 0 }
+    private nextShapeStartingPosition: Position = { x: 10, y: 0 }
 
     constructor(width: number, height: number, blockSize: number){
         this.boardContext = null
