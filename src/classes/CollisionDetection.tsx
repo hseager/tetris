@@ -3,9 +3,9 @@ const isEqual = require('lodash/isEqual')
 
 class CollisionDetection {
     static detectCollision(shape: Shape, pile: Array<Shape>, width: number, height: number): boolean {
-        if(CollisionDetection.collidingWithPile(shape, pile)
-            || CollisionDetection.collidingWithFloor(shape, height)
-            || CollisionDetection.collidingWithWalls(shape, width))
+        if(this.collidingWithPile(shape, pile)
+            || this.collidingWithFloor(shape, height)
+            || this.collidingWithWalls(shape, width))
             return true
         else
             return false

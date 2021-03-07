@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Board from './Board'
 import NextShape from './NextShape'
 import Controls from '../classes/Controls'
 import GameManager from '../classes/GameManager'
+import GameEvents from '../classes/GameEvents'
 
 function App() {
     const [score, setScore] = useState(0)
@@ -12,10 +13,9 @@ function App() {
     const [width, setWidth] = useState(200)
     const [height, setHeight] = useState(400)
     const [blockSize, setBlockSize] = useState(width / columns)
-    const [game, setGame] = useState<GameManager>(new GameManager(width, height, blockSize))
+    const [game, setGame] = useState<GameManager>(new GameManager(width, height, blockSize, playing))
     
     const play = () => {
-        setPlaying(true)
         game.start()
         document.addEventListener('keydown', onKeyPressed)
     }
@@ -36,6 +36,10 @@ function App() {
                 break
         }
     }
+
+    useEffect(() => {
+        GameEvents.setPlaying = setPlaying
+    },[])
 
     return (
         <div className="container">

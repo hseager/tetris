@@ -2,7 +2,7 @@ import Shape from './Shape'
 import Controls from './Controls'
 import Position from './Position'
 import CollisionDetection from './CollisionDetection'
-import Block from './Block'
+import GameEvents from './GameEvents'
 const clone = require('lodash/cloneDeep')
 
 class GameManager {
@@ -14,14 +14,16 @@ class GameManager {
     currentShape: Shape
     gameSpeed: number
     nextShape: Shape
+    private playing: boolean
     private oldTimeStamp: number
     private timePassed: number
     private lastTick: number
     private pile: Array<Shape>
     private currentShapeStartingPosition: Position = { x: 80, y: -60 }
     private nextShapeStartingPosition: Position = { x: 10, y: 0 }
+    private animationFrameId: number | null
 
-    constructor(width: number, height: number, blockSize: number){
+    constructor(width: number, height: number, blockSize: number, playing: boolean){
         this.boardContext = null
         this.nextShapeCanvas = null
         this.width = width
@@ -29,19 +31,35 @@ class GameManager {
         this.blockSize = blockSize
         this.currentShape = new Shape(this.boardContext, this.currentShapeStartingPosition, blockSize)
         this.nextShape = new Shape(this.nextShapeCanvas, this.nextShapeStartingPosition, blockSize)
+        this.playing = playing
         this.oldTimeStamp = 0
         this.timePassed = 0
         this.gameSpeed = 0.3
         this.lastTick = 0
         this.pile = []
+        this.animationFrameId = null
     }
     start(){
-        window.requestAnimationFrame((timeStamp) => { 
+        GameEvents.setPlaying(true)
+        this.playing = true
+        this.animationFrameId = window.requestAnimationFrame((timeStamp) => { 
             this.oldTimeStamp = timeStamp
             this.gameLoop(timeStamp)
         })
     }
+    stop(){
+        GameEvents.setPlaying(false)
+        this.playing = false
+        if(this.animationFrameId)
+            window.cancelAnimationFrame(this.animationFrameId)
+        
+        if(this.boardContext){
+            this.boardContext.fillStyle = 'rgba(0, 0, 0, 0.3)'
+            this.boardContext.fillRect(0, 0, this.width, this.height)
+        }
+    }
     gameLoop(timeStamp: number){
+        if(!this.playing) return
         const secondsPassed = Math.round(timeStamp - this.oldTimeStamp) / 1000
         this.oldTimeStamp = timeStamp
         this.timePassed += secondsPassed
@@ -53,14 +71,23 @@ class GameManager {
             if(!CollisionDetection.detectCollision(nextMoveShape, this.pile, this.width, this.height)){
                 this.updateBoard(nextMoveShape)
             } else {
-                this.pile.push(this.currentShape)
-                this.checkRows()
-                this.swapNextShape()
+                if(!this.gameOver()){
+                    this.pile.push(this.currentShape)
+                    this.checkRows()
+                    this.swapNextShape()
+                } else {
+                    this.stop()
+                }
             }
 
             this.lastTick = this.timePassed + this.gameSpeed
         }
-        window.requestAnimationFrame((timeStamp) => { this.gameLoop(timeStamp) })
+        this.animationFrameId = window.requestAnimationFrame((timeStamp) => { this.gameLoop(timeStamp) })
+    }
+    gameOver(): boolean {
+        if(this.currentShape.blocks.some(block => block.position.y <= 0))
+            return true
+        return false
     }
     checkRows(){
         const rows = this.currentShape.blocks.map(block => block.position.y).filter((value, index, self) => self.indexOf(value) === index)
@@ -109,6 +136,7 @@ class GameManager {
         })
     }
     moveShape(direction: number){
+        if(!this.playing) return
         let nextMove: Position = {...this.currentShape.position}
         let nextMoveShape: Shape = clone(this.currentShape)
         switch (direction){
