@@ -6,13 +6,12 @@ const shapes: Array<ShapeData> = [
         color: '#ffadad',
         rotations: [
             [
-                [0,1],
-                [0,1],
-                [0,1],
-                [0,1]
+                [1],
+                [1],
+                [1],
+                [1]
             ],
             [
-                [0,0,0,0],
                 [1,1,1,1]
             ]
         ]
@@ -22,7 +21,6 @@ const shapes: Array<ShapeData> = [
         color: '#ffd6a5',
         rotations: [
             [
-                [0,0],
                 [1,1],
                 [1,1]
             ]
@@ -81,7 +79,6 @@ const shapes: Array<ShapeData> = [
         color: '#9bf6ff',
         rotations: [
             [
-                [0,0,0],
                 [1,1,0],
                 [0,1,1]
             ],
@@ -97,7 +94,6 @@ const shapes: Array<ShapeData> = [
         color: '#a0c4ff',
         rotations: [
             [
-                [0,0,0],
                 [0,1,1],
                 [1,1,0]
             ],
@@ -113,7 +109,6 @@ const shapes: Array<ShapeData> = [
         color: '#bdb2ff',
         rotations: [
             [
-                [0,0,0],
                 [0,1,0],
                 [1,1,1]
             ],

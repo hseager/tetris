@@ -2,6 +2,7 @@ import Shape from './Shape'
 import Controls from './Controls'
 import Position from './Position'
 import CollisionDetection from './CollisionDetection'
+import Block from './Block'
 const clone = require('lodash/cloneDeep')
 
 class GameManager {
@@ -52,15 +53,40 @@ class GameManager {
             if(!CollisionDetection.detectCollision(nextMoveShape, this.pile, this.width, this.height)){
                 this.updateBoard(nextMoveShape)
             } else {
-                this.createNewShape()
+                this.pile.push(this.currentShape)
+                this.checkRows()
+                this.swapNextShape()
             }
 
             this.lastTick = this.timePassed + this.gameSpeed
         }
         window.requestAnimationFrame((timeStamp) => { this.gameLoop(timeStamp) })
     }
-    createNewShape(){
-        this.pile.push(this.currentShape)
+    checkRows(){
+        const rows = this.currentShape.blocks.map(block => block.position.y).filter((value, index, self) => self.indexOf(value) === index)
+        rows.forEach(row => {
+            let counter = 0
+            this.pile.forEach(shape => {
+                shape.blocks.forEach(block => {
+                    if(block.position.y === row)
+                        counter += this.blockSize
+                })
+            })
+            if(counter === this.width)
+                this.clearRow(row)
+        })
+    }
+    clearRow(row: number){
+        this.pile.forEach(shape => {
+            let newBlocks = shape.blocks.filter(block => block.position.y !== row)
+            newBlocks.forEach(block => {
+                if(block.position.y < row)
+                    block.relativeY++
+            })
+            shape.blocks = newBlocks
+        })
+    }
+    swapNextShape(){
         this.currentShape = this.nextShape
         this.currentShape.context = this.boardContext
         this.currentShape.position = this.currentShapeStartingPosition
