@@ -16,7 +16,7 @@ function Board({ game, setGame } : BoardProps) {
             game.currentShape.context = boardContext
             setGame(game)
         }
-    },[])
+    },[game])
 
     return (
         <canvas 

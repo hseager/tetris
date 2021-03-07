@@ -18,7 +18,7 @@ function NextShape({ game, setGame } : NextShapeProps){
             game.nextShape.context = nextShapeCanvas
             setGame(game)
         }
-    },[])
+    },[game])
 
     return (
         <canvas 

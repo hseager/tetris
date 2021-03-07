@@ -16,6 +16,7 @@ function App() {
     const [game, setGame] = useState<GameManager>(new GameManager(width, height, blockSize, playing))
     
     const play = () => {
+        setGame(new GameManager(width, height, blockSize, playing))
         game.start()
         document.addEventListener('keydown', onKeyPressed)
     }
