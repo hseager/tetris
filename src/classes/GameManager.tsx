@@ -24,6 +24,7 @@ class GameManager {
     private nextShapeStartingPosition: Position = { x: 10, y: 0 }
     private animationFrameId: number | null
     private score: number
+    private gameSpeedChange = 0.02
 
     constructor(width: number, height: number, blockSize: number, playing: boolean){
         this.boardContext = null
@@ -36,7 +37,7 @@ class GameManager {
         this.playing = playing
         this.oldTimeStamp = 0
         this.timePassed = 0
-        this.gameSpeed = 0.3
+        this.gameSpeed = 0.5
         this.lastTick = 0
         this.pile = []
         this.animationFrameId = null
@@ -111,6 +112,7 @@ class GameManager {
         if(clearedRows > 0){
             this.score += ScoreManager.calculateScore(clearedRows)
             GameEvents.setScore(this.score)
+            this.gameSpeed -= this.gameSpeedChange
         }
     }
     clearRow(row: number){
