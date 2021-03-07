@@ -1,4 +1,18 @@
+# Tetris
 Tetris made with React, Typescript, HTMLCanvas & TailwindCss
+
+![screenshot](public/img/screenshot.jpg)
+
+## Features
+* All shapes and rotations with collision detection
+* Controls with WASD or arrow keys
+* Scoring and game speed increase
+
+## Potential Future Features
+* Controls for mobile
+* Theme selector
+* User inputs for custom options such as rows, columns, game speed and custom shapes etc
+* Local head-to-head multiplayer
 
 # Getting Started with Create React App
 
