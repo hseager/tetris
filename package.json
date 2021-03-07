@@ -1,7 +1,14 @@
 {
   "name": "tetris",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "private": false,
+  "author": "Harvey Seager",
+  "keywords": [
+    "tetris",
+    "games",
+    "typescript",
+    "react"
+  ],
   "dependencies": {
     "@craco/craco": "^6.1.1",
     "@tailwindcss/postcss7-compat": "^2.0.2",
