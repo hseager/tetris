@@ -3,6 +3,7 @@ import Controls from './Controls'
 import Position from './Position'
 import CollisionDetection from './CollisionDetection'
 import GameEvents from './GameEvents'
+import ScoreManager from './ScoreManager'
 const clone = require('lodash/cloneDeep')
 
 class GameManager {
@@ -22,6 +23,7 @@ class GameManager {
     private currentShapeStartingPosition: Position = { x: 80, y: -60 }
     private nextShapeStartingPosition: Position = { x: 10, y: 0 }
     private animationFrameId: number | null
+    private score: number
 
     constructor(width: number, height: number, blockSize: number, playing: boolean){
         this.boardContext = null
@@ -38,6 +40,7 @@ class GameManager {
         this.lastTick = 0
         this.pile = []
         this.animationFrameId = null
+        this.score = 0
     }
     start(){
         GameEvents.setPlaying(true)
@@ -91,6 +94,7 @@ class GameManager {
     }
     checkRows(){
         const rows = this.currentShape.blocks.map(block => block.position.y).filter((value, index, self) => self.indexOf(value) === index)
+        let clearedRows = 0
         rows.forEach(row => {
             let counter = 0
             this.pile.forEach(shape => {
@@ -99,9 +103,15 @@ class GameManager {
                         counter += this.blockSize
                 })
             })
-            if(counter === this.width)
+            if(counter === this.width){
+                clearedRows++
                 this.clearRow(row)
+            }
         })
+        if(clearedRows > 0){
+            this.score += ScoreManager.calculateScore(clearedRows)
+            GameEvents.setScore(this.score)
+        }
     }
     clearRow(row: number){
         this.pile.forEach(shape => {

@@ -40,6 +40,7 @@ function App() {
 
     useEffect(() => {
         GameEvents.setPlaying = setPlaying
+        GameEvents.setScore = setScore
     },[])
 
     return (
