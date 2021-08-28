@@ -1,6 +1,8 @@
 # Tetris
 Tetris made with React, Typescript, HTMLCanvas & TailwindCss
 
+Demo: [https://hseager.github.io/tetris/](https://hseager.github.io/tetris/)
+
 ![screenshot](public/img/screenshot.jpg)
 
 ## Features
